@@ -27,7 +27,7 @@ class User(db.Model):
     def create(cls, first_name, last_name, email, password, image_url='https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg'):
         encrypted_password = generate_password_hash(password, 'sha256')
         user = cls(first_name=first_name, email=email, encrypted_password=encrypted_password, image_url=image_url)
-        return user.to_dict()
+        return user
 
     def check_password(self, attempt):
         return check_password_hash(self.encrypted_password, attempt)
