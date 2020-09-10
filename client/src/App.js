@@ -4,7 +4,7 @@ import { Heading } from 'grommet'
 import { useDispatch } from 'react-redux';
 
 import { fetchUserDetails, SESSION_ID, SESSION_TOKEN } from './store/users'
-import Splash from './components/splashSidebar'
+import Splash from './pages/splash'
 
 const sessionId = localStorage.getItem(SESSION_ID)
 const sessionToken = localStorage.getItem(SESSION_TOKEN)
@@ -12,7 +12,9 @@ const sessionToken = localStorage.getItem(SESSION_TOKEN)
 function App() {
     const dispatch = useDispatch()
 
+    
     useEffect(() => {
+        console.log(sessionId, sessionToken)
         if (sessionId && sessionToken) {
             dispatch(fetchUserDetails(sessionToken, sessionId));
         }
@@ -20,7 +22,6 @@ function App() {
 
     return (
         <BrowserRouter>
-            <h1>Hello WOrld</h1>
             <Splash />
         </BrowserRouter>
     );

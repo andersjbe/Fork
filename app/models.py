@@ -30,4 +30,4 @@ class User(db.Model):
         return user
 
     def check_password(self, attempt):
-        return check_password_hash(self.encrypted_password, attempt)
+        return bcrypt.checkpw(attempt.encode('utf-8'), self.encrypted_password)

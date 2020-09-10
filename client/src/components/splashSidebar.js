@@ -18,8 +18,8 @@ export default () => {
     }
 
     return (
-        <Box background='brand' fill='vertical'>
-            <Heading level={4}>Welcome to Fork</Heading>
+        <Box background='brand' elevation='xxlarge' fill='vertical' width='medium' pad='small' style={{position: 'relative' ,zIndex: 2}}>
+            <Heading level={2}>Welcome to Fork</Heading>
             <Text>Please log in or sign up to continue</Text>
             { currentView === 'login' ? <Login toggleView={toggleView} /> : <Signup toggleView={toggleView} /> }
         </Box>

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux";
-import { Form, EmailInputField, PasswordInputField, validators, TextInputField } from 'grommet-controls'
+import { Form, EmailInputField, PasswordInputField, TextInputField } from 'grommet-controls'
 import { Text, Anchor, Button } from "grommet";
 
 import { signUp } from '../store/users'

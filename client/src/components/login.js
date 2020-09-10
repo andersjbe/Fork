@@ -12,8 +12,6 @@ export default props => {
     const [password, setPassword] = useState('');
 
     const submitLogin = e => {
-        e.preventDefault()
-
         dispatch(logIn(email, password))
     }
 
@@ -37,7 +35,7 @@ export default props => {
                     onChange={e => setPassword(e.target.value)}
                 />
 
-                <Button label='Log In' type='submit' />
+                <Button primary label='Log In' type='submit' />
             </Form>
         </div>
     )

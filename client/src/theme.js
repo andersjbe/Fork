@@ -9,8 +9,8 @@ export default {
             "background": "#fff8e1",
             "placeholder": "rgba(68, 68, 68, 0.5)",
             "control": {
-                "dark": "#99CC33",
-                "light": "#6633CC"
+                "dark": "#F6511D",
+                "light": "#F6511D"
             },
             "accent-1": "#c7e673",
             "accent-2": "#6f8040",
@@ -21,6 +21,7 @@ export default {
             "neutral-3": "#dacfe6",
             "neutral-4": "#7830bf",
             "neutral-5": "#d56b89"
+            // "status-ok": "#FFB400"
         },
         "elevation": {
             "none": "none",

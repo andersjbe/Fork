@@ -11,9 +11,10 @@ def index():
     response = User.query.all()
     return {"users": [user.to_dict() for user in response]}
 
-@user_routes.route('/users/<int:id>')
+@user_routes.route('/<int:id>')
 def get_user(id):
     user = User.query.filter(User.id == id).first()
+    print(user)
     if user:
         return {'user': user.to_dict()}
     else:

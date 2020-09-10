@@ -13,7 +13,7 @@ const store = configureStore()
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Grommet theme={theme}>
+      <Grommet theme={theme} full >
         <App />
       </Grommet>
     </Provider>
