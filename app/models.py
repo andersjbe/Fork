@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
+import bcrypt
 
 db = SQLAlchemy()
 
@@ -25,8 +25,8 @@ class User(db.Model):
 
     @classmethod
     def create(cls, first_name, last_name, email, password, image_url='https://thumbs.dreamstime.com/b/default-avatar-profile-icon-social-media-user-vector-default-avatar-profile-icon-social-media-user-vector-portrait-176194876.jpg'):
-        encrypted_password = generate_password_hash(password, 'sha256')
-        user = cls(first_name=first_name, email=email, encrypted_password=encrypted_password, image_url=image_url)
+        encrypted_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(14))
+        user = cls(first_name=first_name, last_name=last_name, email=email, encrypted_password=encrypted_password, image_url=image_url)
         return user
 
     def check_password(self, attempt):

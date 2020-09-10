@@ -24,6 +24,7 @@ Flask-JWT-Extended = "==3.24.1"
 psycopg2-binary = "*"
 alembic = "*"
 flask-migrate = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.8"

@@ -13,7 +13,7 @@ def index():
 
 @user_routes.route('/users/<int:id>')
 def get_user(id):
-    user = User.query.filter(User.id == id).one()
+    user = User.query.filter(User.id == id).first()
     if user:
         return {'user': user.to_dict()}
     else:
@@ -42,6 +42,7 @@ def login():
 
 @user_routes.route('/signup', methods=['POST'])
 def signup():
+    print(request.json)
     first_name = request.json.get('firstName')
     last_name = request.json.get('lastName')
     email = request.json.get('email')
@@ -49,7 +50,7 @@ def signup():
 
     errors = []
 
-    existing_user = User.query.filter(User.email == email).one()
+    existing_user = User.query.filter(User.email == email).first()
     if existing_user:
         errors.append('An account with that email already exists')
 
