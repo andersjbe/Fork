@@ -31,3 +31,59 @@ class User(db.Model):
 
     def check_password(self, attempt):
         return bcrypt.checkpw(attempt.encode('utf-8'), self.encrypted_password)
+
+class RecipeCategory(db.Model):
+    __tablename__ = 'recipe_categories'
+
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(50), nullable=False)
+
+    recipes = db.relationship("Recipe", back_populates="category")
+
+
+class Recipe(db.Model):
+    __tablename__ = 'recipes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable = False)
+    description = db.Column(db.Text)
+    ingredients = db.Column(db.String, nullable = False)
+    instructions = db.Column(db.String(500), nullable = False)
+    image_src = db.Column(db.String, default='https://increasify.com.au/wp-content/uploads/2016/08/default-image.png')
+    from_url = db.Column(db.String)
+    from_recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
+    category_id = db.Column(db.Integer, db.ForeignKey('recipe_categories.id'))
+
+    user = db.relationship("User", back_populates="recipes")
+    from_recipe = db.relationship("Recipe", join_depth=1, backref=db.backref('forks', remote_side="Recipe.id"))
+
+    def to_preview_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'image_src': self.image_src,
+            'user': {
+                'id': self.user.id,
+                'name': f'{self.user.first_name} {self.user.last_name}'
+            }
+        }
+
+    def to_details_dict(self):
+        forks = [fork.to_preview_dict() for fork in self.forks]
+
+        return {
+            'id': self.id,
+            'title': self.title,
+            'description': self.description,
+            'ingredients': self.ingredients,
+            'instructions': self.instructions,
+            'image_src': self.image_src,
+            'from_recipe': self.from_recipe.to_preview_dict(),
+            'forks': forks,
+            'user': {
+                'id': self.user.id,
+                'name': f'{self.user.first_name} {self.user.last_name}',
+                'image_url': self.user.image_url
+            }
+        }
