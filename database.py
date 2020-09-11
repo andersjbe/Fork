@@ -1,0 +1,63 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+from app import app, db
+from app.models import User, RecipeCategory
+
+with app.app_context():
+  db.drop_all()
+  db.create_all()
+
+  #Users User.create(first_name='', last_name='', email='', password='')
+  fork = User.create(first_name='Fork', last_name='App', email='fork@fork.io', password='fork')
+  ben = User.create(first_name='Ben', last_name='Anderson', email='andersjbe@gmail.com', password='fork')
+  ian = User.create(first_name='Ian', last_name='Bentley', email='ian@aa.io', password='fork')
+  javier = User.create(first_name='Javier', last_name='Ortiz', email='javier@aa.io', password='fork')
+  dean = User.create(first_name='Dean', last_name='Dean', email='dean@aa.io', password='fork')
+  angela = User.create(first_name='Angela', last_name='Lansbury', email='angela@aa.io', password='fork')
+
+  db.session.add(fork)
+  db.session.add(ben)
+  db.session.add(ian)
+  db.session.add(javier)
+  db.session.add(dean)
+  db.session.add(angela)
+
+  # Recipe Categories RecipeCategory(category='')
+  asian = RecipeCategory(category='Asian')
+  beef = RecipeCategory(category='Beef')
+  bread = RecipeCategory(category='Bread')
+  breakfast = RecipeCategory(category='Breakfast')
+  chicken = RecipeCategory(category='Chicken')
+  dessert = RecipeCategory(category='Dessert')
+  indian = RecipeCategory(category='Indian')
+  lamb = RecipeCategory(category='Lamb')
+  mexican = RecipeCategory(category='Mexican/Hispanic')
+  misc = RecipeCategory(category='Miscellaneous')
+  pasta = RecipeCategory(category='Pasta')
+  pork = RecipeCategory(category='Pork')
+  salad = RecipeCategory(category='Salad')
+  seafood = RecipeCategory(category='Seafood')
+  soup = RecipeCategory(category='Soup')
+  vegan = RecipeCategory(category='Vegan')
+  vegetarian = RecipeCategory(category='Vegetarian')
+
+  db.session.add(asian)
+  db.session.add(beef)
+  db.session.add(bread)
+  db.session.add(breakfast)
+  db.session.add(chicken)
+  db.session.add(dessert)
+  db.session.add(indian)
+  db.session.add(lamb)
+  db.session.add(mexican)
+  db.session.add(misc)
+  db.session.add(pasta)
+  db.session.add(pork)
+  db.session.add(salad)
+  db.session.add(seafood)
+  db.session.add(soup)
+  db.session.add(vegan)
+  db.session.add(vegetarian)
+
+  db.session.commit() 
