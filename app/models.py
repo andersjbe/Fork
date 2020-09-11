@@ -14,6 +14,8 @@ class User(db.Model):
     encrypted_password = db.Column(db.LargeBinary, nullable=False)
     image_url = db.Column(db.String, nullable=False)
 
+    recipes = db.relationship("Recipe", back_populates="user")
+
     def to_dict(self):
         return {
             "id": self.id,
@@ -57,6 +59,7 @@ class Recipe(db.Model):
 
     user = db.relationship("User", back_populates="recipes")
     from_recipe = db.relationship("Recipe", join_depth=1, backref=db.backref('forks', remote_side="Recipe.id"))
+    category = db.relationship('RecipeCategory', back_populates="recipes")
 
     def to_preview_dict(self):
         return {
