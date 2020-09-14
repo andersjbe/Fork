@@ -12,7 +12,7 @@ const defaultProps = {
 }
 
 export default (props = defaultProps) => {
-    const { title, category, image_url, user: { name } } = props.recipe
+    const { title, category, image_src, user: { name } } = props.recipe
 
     return (
         <Card margin='medium' height='small' width='medium' background='#fff'>
@@ -30,7 +30,7 @@ export default (props = defaultProps) => {
                 <Box
                     width='small' height='small'
                     gridArea='image'
-                    background={`url(${image_url})`}
+                    background={`url(${image_src})`}
                 />
 
                 <Box gridArea='text' alignContent='center' wrap>

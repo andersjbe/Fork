@@ -7,64 +7,74 @@ import RecipeCard from './RecipeCard'
 const RecipeFeed = props => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [recipes, setRecipes] = useState([]);
-    const [hasMore, setHasMore] = useState(true)
+    const [hasMore, setHasMore] = useState(false)
 
-    useEffect(async () => {
-        try {
+    useEffect(() => {
+        const fetchRecipes = async () => {
             let res = null;
-            if ('search' in props && typeof props['search'] === 'string') {
-                res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}`)
-            } else if ('category' in props && typeof props['category'] === 'string') {
-                res = await fetch(`${apiUrl}/recipes/${props['category']}`)
-            }
-    
-            if (res && res.ok) {
-                const data = await res.json()
-                setRecipes(data.recipes)
-                setCurrentIndex(data.recipes.length)
-                if (data.recipes.length < 20) {
-                    setHasMore(false)
+            try {
+                if ('search' in props && typeof props['search'] === 'string') {
+                    res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}`)
+                } else if ('category' in props && typeof props['category'] === 'string') {
+                    res = await fetch(`${apiUrl}/recipes/category/${props['category']}`)
                 }
-            } else if (!res.ok) {
-                throw res
+
+                if (res && res.ok) {
+                    const data = await res.json()
+                    setRecipes(data.recipes)
+                    setCurrentIndex(data.recipes.length)
+                    if (data.recipes.length < 20) {
+                        setHasMore(false)
+                    }
+                } else if (!res.ok) {
+                    throw res
+                }
+            } catch (e) {
+                setRecipes([]);
+                console.log(res)
             }
-        } catch(e) {
-            setRecipes([]);
-            console.log(res)
         }
-    })
+
+        fetchRecipes()
+    }, [])
+    console.log(recipes)
 
     const loadMore = () => {
-        if(!hasMore) {
-            return
+        const fetchMore = async () => {
+            if (!hasMore) {
+                return
+            }
+
+            let res = null;
+            try {
+                if ('search' in props && typeof props['search'] === 'string') {
+                    res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}&offset=${currentIndex}`)
+                } else if ('category' in props && typeof props['category'] === 'string') {
+                    res = await fetch(`${apiUrl}/recipes/${props['category']}?offset=${currentIndex}`)
+                }
+
+                if (res && res.ok) {
+                    const data = await res.json()
+                    setRecipes([...recipes, ...data.recipes])
+                    setCurrentIndex(recipes.length)
+                    if (data.recipes.length < 20) {
+                        setHasMore(false)
+                    }
+                } else if (!res.ok) {
+                    throw res
+                }
+            } catch (e) {
+                console.log(res)
+            }
         }
 
-        try {
-            let res = null;
-            if ('search' in props && typeof props['search'] === 'string') {
-                res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}&offset=${currentIndex}`)
-            } else if ('category' in props && typeof props['category'] === 'string') {
-                res = await fetch(`${apiUrl}/recipes/${props['category']}?offset=${currentIndex}`)
-            }
-    
-            if (res && res.ok) {
-                data = await res.json()
-                setRecipes([...recipes, ...data.recipes])
-                setCurrentIndex(recipes.length)
-                if (data.recipes.length < 20) {
-                    setHasMore(false)
-                }
-            } else if (!res.ok) {
-                throw res
-            }
-        } catch(e) {
-            console.log(res)
-        }
+        fetchMore()
+
     }
 
     return (
-        <Box pad='small' fill='vertical' width='medium'>
-            <InfiniteScroll items={recipes} onMore={loadMore}>
+        <Box  fill='vertical' width='large' overflow='auto'>
+            <InfiniteScroll items={recipes} onMore={loadMore} step={20}>
                 {item => (
                     <RecipeCard recipe={item} />
                 )}

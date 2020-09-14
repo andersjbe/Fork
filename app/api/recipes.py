@@ -29,10 +29,12 @@ def post_recipe():
 
 
 @recipe_routes.route('/category/<path:name>')
-def get_category_recipes(name, offset):
+def get_category_recipes(name):
     offset = request.args.get('offset') if 'offset' in request.args else 0
-    recipes = Recipe.query.filter(
-        Recipe.category.category == name).offset(offset).limit(20).all()
+    category = RecipeCategory.query.filter(RecipeCategory.category == name).first()
+    if category == None:
+        return {'Category does not exist'}, 404
+    recipes = category.recipes
     return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
 
 
