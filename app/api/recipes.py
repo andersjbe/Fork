@@ -28,22 +28,28 @@ def post_recipe():
     return recipe.to_details_dict()
 
 
-@recipe_routes.route('/category/<int:id>', defaults={'offset': 0})
-@recipe_routes.route('/category/<int:id>/<int:offset>')
-def get_category_recipes(id, offset):
-    # category = RecipeCategory.query.get(id)
-    # recipes = category.recipes
-    recipes = Recipe.query.filter(Recipe.category_id == id).offset(offset).limit(20).all()
-    return {'recipes': [recipe.to_preview_dict for recipe in recipes]}
+@recipe_routes.route('/category/<path:name>')
+def get_category_recipes(name, offset):
+    offset = request.args.get('offset') if 'offset' in request.args else 0
+    recipes = Recipe.query.filter(
+        Recipe.category.category == name).offset(offset).limit(20).all()
+    return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
 
 
-@recipe_routes.route('/search/<path:term>', defaults={'offset': 0})
-@recipe_routes.route('/search/<path:term>/<int:offset>')
-def search_recipes(term, offset):
-    recipes = Recipe.query.filter((Recipe.title.ilike(f'%{term}%')) | 
-                                (Recipe.description.ilike(f'%{term}%')) | 
-                                (Recipe.ingredients.ilike(f'%{term}%')) |
-                                (Recipe.instructions.ilike(f'%{term}%'))).offset(offset).limit(20).all()
-    return {'recipes': [recipe.to_preview_dict for recipe in recipes]}
+@recipe_routes.route('/search')
+def search_recipes():
+    term = request.args.get('term')
+    offset = request.args.get('offset') if 'offset' in request.args else 0
+    recipes = Recipe.query.filter((Recipe.title.ilike(f'%{term}%')) |
+                                  (Recipe.description.ilike(f'%{term}%')) |
+                                  (Recipe.ingredients.ilike(f'%{term}%')) |
+                                  (Recipe.instructions.ilike(f'%{term}%'))).offset(offset).limit(20).all()
+    return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
 
 
+@recipe_routes.route('/<int:id>')
+def get_recipe_details(id):
+    recipe = Recipe.query.get(id)
+    if(recipe is None):
+        return {'message': 'Recipe not found'}, 404
+    return recipe.to_details_dict()

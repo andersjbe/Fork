@@ -69,7 +69,8 @@ class Recipe(db.Model):
             'user': {
                 'id': self.user.id,
                 'name': f'{self.user.first_name} {self.user.last_name}'
-            }
+            },
+            'category': self.category.category
         }
 
     def to_details_dict(self):

@@ -55,7 +55,7 @@ export default props => {
                     onChange={e => setPassword(e.target.value)}
                 />
 
-                <Button label='Sign Up' type='submit' />
+                <Button primary label='Sign Up' type='submit' />
             </Form>
         </div>
     )
