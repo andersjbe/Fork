@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Form, EmailInputField, PasswordInputField, TextInputField } from 'grommet-controls'
 import { Text, Anchor, Button } from "grommet";
 
-import { signUp } from '../store/users'
+import { signUp, SESSION_ID } from '../store/users'
 
 export default props => {
     const dispatch = useDispatch()
@@ -13,10 +13,11 @@ export default props => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const submitSignUp = e => {
-        // e.preventDefault()
-
-        dispatch(signUp(firstName, lastName, email, password))
+    const submitSignUp = async e => {
+        await dispatch(signUp(firstName, lastName, email, password))
+        if (localStorage.getItem(SESSION_ID)) {
+            window.location = '/dashboard'
+        }
     }
 
     return (

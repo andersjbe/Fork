@@ -66,7 +66,7 @@ const setUser = (token, user) => ({
     user
 })
 
-export default function reducer(state = { }, action) {
+export default function reducer(state = { id: null }, action) {
     switch (action.type) {
         case SET_USER:
             return { token: action.token, ...action.user, ...state }

@@ -3,16 +3,19 @@ import { useDispatch } from "react-redux";
 import { Form, EmailInputField, PasswordInputField, validators } from 'grommet-controls'
 import { Text, Anchor, Button } from "grommet";
 
-import { logIn } from '../store/users'
+import { logIn, SESSION_ID } from '../store/users'
 
-export default props => {
+export default function Login(props)  {
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const submitLogin = e => {
-        dispatch(logIn(email, password))
+    const submitLogin = async e => {
+        await dispatch(logIn(email, password))
+        if (localStorage.getItem(SESSION_ID)) {
+            window.location = '/dashboard'
+        }
     }
 
     return (
@@ -39,5 +42,5 @@ export default props => {
             </Form>
         </div>
     )
-
 }
+
