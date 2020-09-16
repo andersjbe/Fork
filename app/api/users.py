@@ -27,8 +27,7 @@ def login():
 
     try:
         user = User.query.filter(User.email == email).one()
-    except e:
-        print(e)
+    except:
         return {'message': 'User not found'}, 404
 
     password = request.json.get('password')

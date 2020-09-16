@@ -9,10 +9,9 @@ export default () => {
     const { first_name, last_name, image_url, email } = useSelector(state => state.auth)
 
     return (
-        <Sidebar background="brand" fill="vertical"
-            header={<ImageStamp src={image_url} />}
+        <Sidebar background="brand" width="xxsmall"
+            header={<ImageStamp src={image_url} size='small' />}
         >
-
         </Sidebar>
     )
 }

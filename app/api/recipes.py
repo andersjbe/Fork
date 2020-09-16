@@ -15,11 +15,12 @@ def post_recipe():
         'instructions': request.json.get('instructions'),
         'user_id': request.json.get('userId'),
         'category_id': request.json.get('categoryId'),
-        'from_recipe_id': request.json.get('fromRecipeId')
+        'from_recipe_id': request.json.get('fromRecipeId'),
+        'image_url':  'https://lh3.googleusercontent.com/proxy/IYe0Jq1BK-pGLIApV-7VDbsd5qrvLjWrM_GQLUmJHFKcs4clnxxaOH2lzzjSAcSBK8Dc83Cf8T-LefvIB7P_3-_avDgafgxcU31ddvZXh9uCLm1R5cMKlvQ'
     }
 
     if (not recipe_data['title']) or (not recipe_data['ingredients']) or (not recipe_data['instructions']) or (not recipe_data['user_id']) or (not recipe_data['category_id']):
-        return {'message': 'Incomplete recipe data', recipe: recipe_data}, 401
+        return {'message': 'Incomplete recipe data', 'recipe': recipe_data}, 401
 
     recipe = Recipe(**recipe_data)
     db.session.add(recipe)
@@ -31,10 +32,11 @@ def post_recipe():
 @recipe_routes.route('/category/<path:name>')
 def get_category_recipes(name):
     offset = request.args.get('offset') if 'offset' in request.args else 0
-    category = RecipeCategory.query.filter(RecipeCategory.category == name).first()
+    category = RecipeCategory.query.filter(
+        RecipeCategory.category == name).first()
     if category == None:
         return {'Category does not exist'}, 404
-    recipes = category.recipes
+    recipes = category.recipes[offset:offset+20]
     return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
 
 

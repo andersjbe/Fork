@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchUserDetails, SESSION_ID, SESSION_TOKEN } from './store/users'
 import Splash from './pages/splash'
-// import Navbar from './components/Navbar'
+import Navbar from './components/Navbar'
 // import RecipeCard from './components/RecipeCard';
-import RecipeFeed from './components/RecipeFeed'
+// import RecipeFeed from './components/RecipeFeed'
 import AuthRoute from './components/AuthRoute'
 import ProtectedRoute from './components/ProtectedRoute'
+import CreateRecipe from './pages/CreateRecipe'
 
 const sessionId = localStorage.getItem(SESSION_ID)
 const sessionToken = localStorage.getItem(SESSION_TOKEN)
@@ -30,7 +31,7 @@ function App() {
             <Switch>
                 <ProtectedRoute
                     path='/create-recipe'
-                    component={() => <h1>Create Recipe</h1>}
+                    component={CreateRecipe}
                     currentUserId={sessionId}
                     exact
                 />
