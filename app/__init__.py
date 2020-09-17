@@ -21,6 +21,7 @@ jwt = JWTManager(app)
 
 # Application Security
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.after_request
