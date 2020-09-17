@@ -15,7 +15,7 @@ export default (props = defaultProps) => {
     const { title, category, image_src, user: { name } } = props.recipe
 
     return (
-        <Card margin='xsmall' height='small' width='medium' background='#fff'>
+        <Card margin='xdocksmall' height='small' width='medium' background='#fff'>
             <Grid
                 rows={['85%', '15%']}
                 columns={['small', 'small']}
