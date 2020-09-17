@@ -15,7 +15,7 @@ export default (props = defaultProps) => {
     const { title, category, image_src, user: { name } } = props.recipe
 
     return (
-        <Card margin='medium' height='small' width='medium' background='#fff'>
+        <Card margin='xsmall' height='small' width='medium' background='#fff'>
             <Grid
                 rows={['85%', '15%']}
                 columns={['small', 'small']}
@@ -29,6 +29,7 @@ export default (props = defaultProps) => {
             >
                 <Box
                     width='small' height='small'
+                    alignSelf='center'
                     gridArea='image'
                     background={`url(${image_src})`}
                 />
@@ -40,7 +41,6 @@ export default (props = defaultProps) => {
 
                 <Box gridArea='tag'>
                     <Tag alignSelf='end' pad='small' size='medium' round='small' label={category} background='accent-2' />
-
                 </Box>
             </Grid>
             <CardFooter />

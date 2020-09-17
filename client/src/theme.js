@@ -75,6 +75,10 @@ export default {
         "color": {
             "dark": "#99CC33",
             "light": "#6633CC"
+        },
+        'hover': {
+            'fontWeight': 700,
+            'textDecoration': 'none'
         }
     },
     "heading": {

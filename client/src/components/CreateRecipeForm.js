@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardBody, CardFooter, CardHeader, FormField, Grid, Heading, Meter, Select, Text, TextArea, TextInput } from 'grommet'
+import { Box, Image, Button, Card, CardBody, CardFooter, CardHeader, FormField, Grid, Heading, Meter, Select, Text, TextArea, TextInput, Paragraph, List } from 'grommet'
 import React, { useEffect, useState } from 'react'
 import { AddCircle, SubtractCircle } from 'grommet-icons'
 
@@ -13,6 +13,8 @@ export default function CreatePetitionForm(props) {
     const [instructions, setInstructions] = useState(['', '', ''])
     const [category, setCategory] = useState({ category: 'Asian', id: 1 })
     const userId = (localStorage.getItem(SESSION_ID))
+    const [image, setImage] = useState(null)
+    const [imagePreview, setImagePreivew] = useState('https://andersjbe-fork.s3-us-west-1.amazonaws.com/unnamed.jpg');
 
     const formData = {
         title,
@@ -20,7 +22,8 @@ export default function CreatePetitionForm(props) {
         ingredients: ingredients.filter(ingredient => ingredient).join(' | '),
         instructions: instructions.filter(instruction => instruction).join('\r\n'),
         categoryId: category.id,
-        userId
+        userId,
+        file: image
     }
 
     const [view, setView] = useState(0)
@@ -30,28 +33,48 @@ export default function CreatePetitionForm(props) {
     }
     const lastView = () => setView(view - 1)
 
-    const errors = []
+    const [errors, setErrors] = useState([])
+
+    const validateForm = () => {
+        const tmp = [...errors]
+        if (title.length === 0 && errors.indexOf('Title must have a value') === -1) {
+            tmp.push('Title must have a value')
+        }
+        if (ingredients.filter(ingredient => ingredient).length === 0 && errors.indexOf('You must enter at least one ingredient') === -1) {
+            tmp.push('You must enter at least one ingredient')
+        }
+        if (instructions.filter(instruction => instruction).length === 0 && errors.indexOf('You must enter at least one instruction') === -1) {
+            tmp.push('You must enter at least one instruction')
+        }
+        setErrors(tmp)
+    }
 
     const submitForm = () => {
+        validateForm()
+        if (errors.length > 0) {
+            return
+        }
+
         const postRecipe = async () => {
-            const body = JSON.stringify(formData)
+            const body = new FormData()
+            Object.keys(formData).forEach(key => body.append(key, formData[key]))
             const res = fetch(`${apiUrl}/recipes`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body
             })
-
-            if (res.ok) {
+            console.log((await res).ok)
+            if ((await res).ok) {
                 window.location = '/dashboard'
             } else {
-                errors.push('Something went wrong, please try again later. We apologize for the inconvenience')
+                setErrors([...errors, 'Something went wrong, please try again later. We apologize for the inconvenience'])
             }
         }
+
+        postRecipe()
     }
 
     const formViews = [
         <DetailsView
-            nextView={nextView}
             title={title}
             setTitle={setTitle}
             description={description}
@@ -60,18 +83,26 @@ export default function CreatePetitionForm(props) {
             setCategory={setCategory}
         />,
         <IngredientsView
-            nextView={nextView}
-            lastView={lastView}
             ingredients={ingredients}
             setIngredients={setIngredients}
         />,
         <InstructionsView
-            nextView={nextView}
-            lastView={lastView}
             instructions={instructions}
             setInstructions={setInstructions}
         />,
-        <SubmissionView />
+        <ImageView
+            setImage={setImage}
+            imagePreview={imagePreview}
+            setImagePreivew={setImagePreivew}
+        />,
+        <SubmissionView
+            title={title}
+            imagePreview={imagePreview}
+            category={category}
+            description={description}
+            ingredients={ingredients.filter(ing => ing)}
+            instructions={instructions.filter(ins => ins)}
+        />
     ]
 
     return (
@@ -82,22 +113,26 @@ export default function CreatePetitionForm(props) {
             background="#fff"
         >
             <CardHeader>
-                {errors.map((error, i) => (
-                    <Text key={i} color='red'>{error}</Text>)
-                )}
-            </CardHeader>
-            <CardBody overflow='auto' style={{ position: 'relative' }}>
-                {formViews[view]}
-
-            </CardBody>
-            <CardFooter>
                 <Meter
                     max={formViews.length}
                     values={[{ value: view + 1 }]}
-                    alignSelf='center'
                     round
-                    size="large"
+                    size="xlarge"
                 />
+            </CardHeader>
+            <CardBody overflow='auto' style={{ position: 'relative' }}>
+                <ul>
+                    {errors.map((error, i) => (
+                        <li key={i} style={{ color: 'red' }}>{error}</li>)
+                    )}
+                </ul>
+
+                {formViews[view]}
+            </CardBody>
+            <CardFooter>
+                {view > 0 ? <Button label="< Previous" onClick={lastView} /> : <Box />}
+                {view < formViews.length - 1 ? <Button label="Next >" onClick={nextView} /> : null}
+                {view === formViews.length - 1 ? <Button label='Submit' onClick={() => submitForm()} primary /> : null}
             </CardFooter>
         </Card>
     )
@@ -117,6 +152,7 @@ function DetailsView(props) {
 
         fetchCategories()
     }, [])
+
 
     return (
         <>
@@ -145,15 +181,6 @@ function DetailsView(props) {
                 />
             </FormField>
 
-            <div
-                style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-around' }}
-            >
-                {
-                    props.title ?
-                        <Button label="Next >" onClick={props.nextView} /> :
-                        null
-                }
-            </div>
         </>
     )
 }
@@ -208,16 +235,7 @@ function IngredientsView(props) {
                 onClick={addIngredient}
             />
 
-            <div
-                style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-around' }}
-            >
-                <Button label="< Previous" onClick={props.lastView} />
-                {
-                    props.ingredients.filter(item => item).length > 0 ?
-                        <Button label="Next >" onClick={props.nextView} /> :
-                        null
-                }
-            </div>
+
         </>
     )
 }
@@ -277,20 +295,72 @@ function InstructionsView(props) {
                 onClick={addInstruction}
             />
 
-            <div
-                style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-around' }}
-            >
-                <Button label="< Previous" onClick={props.lastView} />
-                {
-                    props.instructions.filter(item => item).length > 0 ?
-                        <Button label="Next >" onClick={props.nextView} /> :
-                        null
-                }
-            </div>
         </>
     )
 }
 
-function SubmissionView(props) {
+function ImageView(props) {
 
+    const onChange = e => {
+        props.setImage(e.target.files.item(0))
+        try {
+            props.setImagePreivew(URL.createObjectURL(e.target.files.item(0)))
+        } catch (e) {
+            props.setImagePreivew('https://andersjbe-fork.s3-us-west-1.amazonaws.com/unnamed.jpg')
+        }
+    }
+
+    return (<>
+        <Heading level={3} textAlign='center' alignSelf='center'>
+            Recipe Image
+        </Heading>
+
+        <input type='file' onChange={onChange} accept='image/*' />
+
+        <Box pad='small' height="small" width="medium" fill={true} >
+            <Image
+                fit="contain"
+                src={props.imagePreview}
+                alignSelf='center'
+            />
+        </Box>
+
+
+
+    </>)
+}
+
+function SubmissionView(props) {
+    return (
+        <>
+            <Heading level={3} textAlign='center' alignSelf='center'>
+                {props.title}
+            </Heading>
+
+            <Box height="medium" width="medium" alignSelf='center' round='medium'>
+                <Image
+                    fit="contain"
+                    src={props.imagePreview}
+                    alignSelf='center'
+                />
+            </Box>
+
+            <Paragraph>
+                {props.description}
+            </Paragraph>
+
+            <List
+                alignSelf='center'
+                data={props.ingredients.map((ing, i) => ({ ingredient: ing }))}
+            />
+
+            <List
+                alignSelf='center'
+                data={props.instructions.map((ins, i) => ({ order: i + 1, ins: ins }))}
+                primaryKey='order'
+                secondaryKey='ins'
+            />
+
+        </>
+    )
 }

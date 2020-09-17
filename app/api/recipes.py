@@ -1,24 +1,36 @@
 from flask import Blueprint, jsonify, request
+import boto3
+from datetime import datetime
 
 from ..models import db, Recipe, RecipeCategory
 
 recipe_routes = Blueprint('recipes', __name__)
 
+s3 = boto3.resource('s3')
+bucket = s3.Bucket(name="andersjbe-fork")
 
 @recipe_routes.route('', methods=["POST"])
 def post_recipe():
     # TODO upload image to s3 with boto3
+    image_url = 'https://andersjbe-fork.s3-us-west-1.amazonaws.com/unnamed.jpg'
+    if len(request.files) > 0:
+        image = request.files['file']
+        key=f'{datetime.now()}{img.filename}'
+        bucket.put_object(Key=key, Body=image, ContentType=image.content_type)
+        image_url = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
+    
     recipe_data = {
-        'title': request.json.get('title'),
-        'description': request.json.get('description'),
-        'ingredients': request.json.get('ingredients'),
-        'instructions': request.json.get('instructions'),
-        'user_id': request.json.get('userId'),
-        'category_id': request.json.get('categoryId'),
-        'from_recipe_id': request.json.get('fromRecipeId'),
-        'image_url':  'https://lh3.googleusercontent.com/proxy/IYe0Jq1BK-pGLIApV-7VDbsd5qrvLjWrM_GQLUmJHFKcs4clnxxaOH2lzzjSAcSBK8Dc83Cf8T-LefvIB7P_3-_avDgafgxcU31ddvZXh9uCLm1R5cMKlvQ'
+        'title': request.form.get('title'),
+        'description': request.form.get('description'),
+        'ingredients': request.form.get('ingredients'),
+        'instructions': request.form.get('instructions'),
+        'user_id': request.form.get('userId'),
+        'category_id': request.form.get('categoryId'),
+        'from_recipe_id': request.form.get('fromRecipeId'),
+        'image_src': image_url
     }
 
+    
     if (not recipe_data['title']) or (not recipe_data['ingredients']) or (not recipe_data['instructions']) or (not recipe_data['user_id']) or (not recipe_data['category_id']):
         return {'message': 'Incomplete recipe data', 'recipe': recipe_data}, 401
 
