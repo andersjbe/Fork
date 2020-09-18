@@ -4,11 +4,13 @@ import {
 import thunk from 'redux-thunk'
 
 import auth from './users'
+import currentRecipe from './currentRecipe'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducer = combineReducers({
-    auth
+    auth,
+    currentRecipe
 })
 
 export default (initialState) => {

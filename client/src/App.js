@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import CreateRecipe from './pages/CreateRecipe'
 import Dashboard from './pages/Dashboard'
 import PageLayout from './pages/PageLayout'
+import NotFound from './pages/NotFound'
 
 const sessionId = localStorage.getItem(SESSION_ID)
 const sessionToken = localStorage.getItem(SESSION_TOKEN)
@@ -28,19 +29,37 @@ function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <AuthRoute
-                    path='/'
-                    component={Splash}
+                <ProtectedRoute
+                    path='/create-recipe'
+                    component={() => <PageLayout page={CreateRecipe} />}
                     currentUserId={sessionId}
                     exact
                 />
-               
+                <ProtectedRoute
+                    path='/dashboard'
+                    component={() => <PageLayout page={Dashboard} />}
+                    currentUserId={sessionId}
+                    exact
+                />
+                <ProtectedRoute
+                    path='/search'
+                    component={() => <h1>Search</h1>}
+                    currentUserId={sessionId}
+                    exact
+                />
                 <ProtectedRoute
                     path=''
-                    component={PageLayout}
+                    component={() => <PageLayout page={NotFound} />}
                     currentUserId={sessionId}
+                    exact
                 />
             </Switch>
+            <AuthRoute
+                path='/'
+                component={Splash}
+                currentUserId={sessionId}
+                exact
+            />
         </BrowserRouter>
     );
 }

@@ -111,6 +111,7 @@ export default function CreatePetitionForm(props) {
             height='large'
             pad='small'
             background="#fff"
+            // alignSelf='center'
         >
             <CardHeader>
                 <Meter

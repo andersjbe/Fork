@@ -1,6 +1,9 @@
 import { Box, Card, CardHeader, CardBody, Text, Image, Grid, CardFooter } from 'grommet'
 import { Tag } from 'grommet-controls'
 import React from 'react'
+import { useDispatch } from 'react-redux'
+
+import { loadRecipe} from '../store/currentRecipe'
 
 const defaultProps = {
     title: '',
@@ -13,11 +16,14 @@ const defaultProps = {
 
 export default (props = defaultProps) => {
     const { id, title, category, image_src, user: { name } } = props.recipe
+    const dispatch = useDispatch()
 
     console.log(image_src)
     return (
         <Card margin='xsmall' height='small' width='medium' 
-            background='#fff' flex={false} alignSelf={"center"}>
+            background='#fff' flex={false} alignSelf={"center"}
+            onClick={() => dispatch(loadRecipe(id))}
+        >
             <Grid
                 rows={['85%', '15%']}
                 columns={['small', 'small']}

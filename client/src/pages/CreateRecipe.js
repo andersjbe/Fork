@@ -7,12 +7,7 @@ import Navbar from '../components/Navbar'
 export default function CreateRecipe() {
     return (
         <>
-            <Navbar />
-            <Main align='center' margin='small'>
                 <CreateRecipeForm />
-
-            </Main>
-
         </>
     )
 }
