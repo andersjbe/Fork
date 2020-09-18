@@ -73,10 +73,10 @@ const RecipeFeed = props => {
     }
 
     return (
-        <Box  fill='vertical' width='large' overflow='auto'>
+        <Box  fill='vertical' width='430px' overflow='auto'>
             <InfiniteScroll items={recipes} onMore={loadMore} step={20}>
                 {item => (
-                    <RecipeCard recipe={item} />
+                    <RecipeCard key={item.id} recipe={item} />
                 )}
             </InfiniteScroll>
         </Box>

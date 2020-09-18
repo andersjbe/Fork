@@ -12,10 +12,12 @@ const defaultProps = {
 }
 
 export default (props = defaultProps) => {
-    const { title, category, image_src, user: { name } } = props.recipe
+    const { id, title, category, image_src, user: { name } } = props.recipe
 
+    console.log(image_src)
     return (
-        <Card margin='xdocksmall' height='small' width='medium' background='#fff'>
+        <Card margin='xsmall' height='small' width='medium' 
+            background='#fff' flex={false} alignSelf={"center"}>
             <Grid
                 rows={['85%', '15%']}
                 columns={['small', 'small']}
@@ -39,8 +41,8 @@ export default (props = defaultProps) => {
                     <Text margin='xxsmall'>{`by ${name}`}</Text>
                 </Box>
 
-                <Box gridArea='tag'>
-                    <Tag alignSelf='end' pad='small' size='medium' round='small' label={category} background='accent-2' />
+                <Box gridArea='tag' style={{position: 'relative'}}>
+                    <Tag style={{position: 'absolute', bottom: '0'}} alignSelf='end' pad='xsmall' size='medium' round='small' label={category} background='accent-2' />
                 </Box>
             </Grid>
             <CardFooter />

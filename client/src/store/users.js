@@ -45,8 +45,8 @@ export const logIn = (email, password) => async dispatch => {
         const errData = await e.json()
         console.log(errData)
     }
-
 }
+
 
 export const fetchUserDetails = (token, id) => async dispatch => {
     const res = await fetch(`${apiUrl}/users/${id}`, {
@@ -59,6 +59,19 @@ export const fetchUserDetails = (token, id) => async dispatch => {
 }
 
 const SET_USER = 'fork/users/SET_USER'
+const REMOVE_USER = 'fork/users/REMOVE_USER'
+
+export const logOut = () => {
+    localStorage.removeItem(SESSION_ID)
+    localStorage.removeItem(SESSION_TOKEN)
+
+    window.location = '/'
+
+    return {
+        action: REMOVE_USER,
+    }
+}
+
 
 const setUser = (token, user) => ({
     type: SET_USER,
@@ -70,6 +83,8 @@ export default function reducer(state = { id: null }, action) {
     switch (action.type) {
         case SET_USER:
             return { token: action.token, ...action.user, ...state }
+        case REMOVE_USER:
+            return { id: null }
         default:
             return { ...state }
     }

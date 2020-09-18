@@ -3,6 +3,8 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { AddCircle } from 'grommet-icons'
 
+import { logOut} from '../store/users'
+
 export default () => {
     const { auth } = useSelector(state => state)
 
@@ -29,7 +31,7 @@ export default () => {
                     icon={false}
                     items={[
                         { label: 'Account' },
-                        { label: 'Log Out' }
+                        { label: 'Log Out', onClick: logOut }
                     ]}
                     dropAlign={{
                         top: 'top',

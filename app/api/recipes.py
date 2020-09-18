@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 import boto3
-from datetime import datetime
+from uuid import uuid4
 
 from ..models import db, Recipe, RecipeCategory
 
@@ -15,7 +15,7 @@ def post_recipe():
     image_url = 'https://andersjbe-fork.s3-us-west-1.amazonaws.com/unnamed.jpg'
     if len(request.files) > 0:
         image = request.files['file']
-        key=f'{datetime.now()}{img.filename}'
+        key=f'{uuid4()}{image.filename}'
         bucket.put_object(Key=key, Body=image, ContentType=image.content_type)
         image_url = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
     

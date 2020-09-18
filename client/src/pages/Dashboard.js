@@ -9,7 +9,7 @@ export default function Dashboard(props) {
         <Navbar />
         <Main margin='small'>
             <h1>Dashboard</h1>
-            <Feed search='sd' />
+            <Feed search='e' />
         </Main>
     </>)
 }
