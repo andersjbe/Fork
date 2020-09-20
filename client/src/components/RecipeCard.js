@@ -1,7 +1,7 @@
 import { Box, Card, CardHeader, CardBody, Text, Image, Grid, CardFooter } from 'grommet'
 import { Tag } from 'grommet-controls'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { loadRecipe} from '../store/currentRecipe'
 
@@ -17,16 +17,18 @@ const defaultProps = {
 export default (props = defaultProps) => {
     const { id, title, category, image_src, user: { name } } = props.recipe
     const dispatch = useDispatch()
+    const currentId = useSelector(state => state.currentRecipe.id)
 
     console.log(image_src)
     return (
-        <Card margin='xsmall' height='small' width='medium' 
-            background='#fff' flex={false} alignSelf={"center"}
+        <Card margin='xsmall' height='small'  width='medium' 
+             alignSelf={"center"} flex={false}
             onClick={() => dispatch(loadRecipe(id))}
+            background={ id == currentId ? '#fde74c' : '#fff'}
         >
             <Grid
                 rows={['85%', '15%']}
-                columns={['small', 'small']}
+                columns={['50%', '50%']}
                 gap='xxsmall'
                 areas={[
                     { name: 'image', start: [0, 0], end: [0, 1] },
@@ -36,7 +38,8 @@ export default (props = defaultProps) => {
                 fill={true}
             >
                 <Box
-                    width='small' height='small'
+                    // width='small' 
+                    height='small'
                     alignSelf='center'
                     gridArea='image'
                     background={`url(${image_src})`}

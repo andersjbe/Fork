@@ -1,6 +1,9 @@
 import { apiUrl } from '../config'
 
-export const loadRecipe = recipeId => async dispatch => {
+export const loadRecipe = recipeId => async (dispatch, getState) => {
+    if (getState().currentRecipe.id === recipeId) {
+        return
+    }
     try {
         const res = await fetch(`${apiUrl}/recipes/${recipeId}`)
 
@@ -13,8 +16,8 @@ export const loadRecipe = recipeId => async dispatch => {
             throw res
         }
     } catch (e) {
-        const errData = await e.json()
-        console.log(errData)
+        // const errData = await e.json()
+        console.log(e)
     }
 }
 
@@ -25,7 +28,7 @@ const setRecipe = (data) => ({
     data
 })
 
-export default function reducer(state = {}, action) {
+export default function reducer(state={id: null}, action) {
     switch (action.type) {
         case SET_RECIPE:
             return { ...action.data };

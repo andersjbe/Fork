@@ -90,5 +90,9 @@ class Recipe(db.Model):
                 'id': self.user.id,
                 'name': f'{self.user.first_name} {self.user.last_name}',
                 'image_url': self.user.image_url
+            }, 
+            'category': {
+                'id': self.category.id,
+                'category': self.category.category
             }
         }

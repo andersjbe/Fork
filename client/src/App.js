@@ -10,6 +10,7 @@ import CreateRecipe from './pages/CreateRecipe'
 import Dashboard from './pages/Dashboard'
 import PageLayout from './pages/PageLayout'
 import NotFound from './pages/NotFound'
+import Browse from './pages/browse'
 
 const sessionId = localStorage.getItem(SESSION_ID)
 const sessionToken = localStorage.getItem(SESSION_TOKEN)
@@ -24,11 +25,14 @@ function App() {
         }
     }, [])
 
-    const currentUserId = useSelector(state => state.auth.id)
-
     return (
         <BrowserRouter>
             <Switch>
+                <ProtectedRoute 
+                    path='/browse'
+                    component={() => <PageLayout page={Browse} />}
+                    currentUserId={sessionId}
+                />
                 <ProtectedRoute
                     path='/create-recipe'
                     component={() => <PageLayout page={CreateRecipe} />}

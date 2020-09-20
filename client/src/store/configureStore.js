@@ -2,21 +2,34 @@ import {
     createStore, applyMiddleware, combineReducers, compose
 } from 'redux'
 import thunk from 'redux-thunk'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 import auth from './users'
 import currentRecipe from './currentRecipe'
+import mealDB from './mealDb'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const reducer = combineReducers({
-    auth,
-    currentRecipe
-})
+const persistConfig = {
+    key: 'root',
+    storage
+}
 
-export default (initialState) => {
-    return createStore(
-        reducer, 
-        initialState, 
+const reducer = persistReducer(
+    persistConfig,
+    combineReducers({
+        auth,
+        currentRecipe,
+        mealDB
+    }))
+
+export default () => {
+    const store = createStore(
+        reducer,
         composeEnhancers(applyMiddleware(thunk))
     )
+
+    const persistor = persistStore(store)
+    return { store, persistor }
 }

@@ -3,25 +3,31 @@ import React, { useEffect, useState } from 'react'
 
 import { apiUrl } from '../config'
 import RecipeCard from './RecipeCard'
+import { searchAPI } from '../store/mealDb'
 
 const RecipeFeed = props => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [recipes, setRecipes] = useState([]);
     const [hasMore, setHasMore] = useState(false)
 
+    console.log(props)
+
     useEffect(() => {
+        const apiResponse = []
         const fetchRecipes = async () => {
             let res = null;
             try {
                 if ('search' in props && typeof props['search'] === 'string') {
                     res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}`)
+                    // apiResponse = await searchAPI(props['search'])
+                    console.log(apiResponse)
                 } else if ('category' in props && typeof props['category'] === 'string') {
                     res = await fetch(`${apiUrl}/recipes/category/${props['category']}`)
                 }
 
                 if (res && res.ok) {
                     const data = await res.json()
-                    setRecipes(data.recipes)
+                    setRecipes([...data.recipes, ...apiResponse])
                     setCurrentIndex(data.recipes.length)
                     if (data.recipes.length < 20) {
                         setHasMore(false)
@@ -37,7 +43,6 @@ const RecipeFeed = props => {
 
         fetchRecipes()
     }, [])
-    console.log(recipes)
 
     const loadMore = () => {
         const fetchMore = async () => {
@@ -73,8 +78,16 @@ const RecipeFeed = props => {
     }
 
     return (
-        <Box  fill='vertical' width='430px' overflow='auto'>
-            <InfiniteScroll items={recipes} onMore={loadMore} step={20}>
+        <Box id='feedbox'
+            width={'m%'}
+            fill='vertical'
+            overflow={{ vertical: 'auto' }}
+            flex={false}
+            alignSelf='center'
+            pad='small'
+        >
+
+            <InfiniteScroll items={recipes} onMore={loadMore} step={10}>
                 {item => (
                     <RecipeCard key={item.id} recipe={item} />
                 )}
