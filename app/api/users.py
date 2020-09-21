@@ -11,6 +11,7 @@ def index():
     response = User.query.all()
     return {"users": [user.to_dict() for user in response]}
 
+
 @user_routes.route('/<int:id>')
 def get_user(id):
     user = User.query.filter(User.id == id).first()
@@ -19,6 +20,18 @@ def get_user(id):
         return {'user': user.to_dict()}
     else:
         return {'message': 'User not found'}, 404
+
+
+@user_routes.route('/<int:id>/recipes')
+def get_user_recipes(id):
+    user = User.query.filter(User.id == id).first()
+    if user:
+        offset = request.args.get('offset') if 'offset' in request.args else 0
+        recipes = user.recipes[offset:offset+20]
+        return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
+    else:
+        return {'message': 'User not found'}, 404
+
 
 @user_routes.route('/login', methods=['POST'])
 def login():

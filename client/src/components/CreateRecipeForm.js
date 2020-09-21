@@ -1,17 +1,34 @@
 import { Box, Image, Button, Card, CardBody, CardFooter, CardHeader, FormField, Grid, Heading, Meter, Select, Text, TextArea, TextInput, Paragraph, List } from 'grommet'
 import React, { useEffect, useState } from 'react'
 import { AddCircle, SubtractCircle } from 'grommet-icons'
+import { IconButton } from 'grommet-controls'
 
 import { apiUrl } from '../config'
 import { SESSION_ID } from '../store/users'
-import { IconButton } from 'grommet-controls'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 export default function CreatePetitionForm(props) {
-    const [title, setTitle] = useState('')
-    const [description, setDescription] = useState('')
-    const [ingredients, setIngredients] = useState(['', '', '', '', ''])
-    const [instructions, setInstructions] = useState(['', '', ''])
-    const [category, setCategory] = useState({ category: 'Asian', id: 1 })
+    let forkedRecipe = {
+        title: "",
+        description: "",
+        ingredients: ['', '', '', '', ''],
+        instructions: ['', '', ''],
+        category: { category: 'Asian', id: 1 }
+    }
+
+    const {currentRecipe} = useSelector(state => state)
+    const location = useLocation()
+    const fromRecipeId = new URLSearchParams(location.search).get('fork')
+    if(currentRecipe.id && fromRecipeId) {
+        forkedRecipe = currentRecipe
+    }
+
+    const [title, setTitle] = useState(forkedRecipe.title)
+    const [description, setDescription] = useState(forkedRecipe.description)
+    const [ingredients, setIngredients] = useState(forkedRecipe.ingredients)
+    const [instructions, setInstructions] = useState(forkedRecipe.instructions)
+    const [category, setCategory] = useState(forkedRecipe.category)
     const userId = (localStorage.getItem(SESSION_ID))
     const [image, setImage] = useState(null)
     const [imagePreview, setImagePreivew] = useState('https://andersjbe-fork.s3-us-west-1.amazonaws.com/unnamed.jpg');
@@ -23,12 +40,12 @@ export default function CreatePetitionForm(props) {
         instructions: instructions.filter(instruction => instruction).join('\r\n'),
         categoryId: category.id,
         userId,
+        fromRecipeId,
         file: image
     }
 
     const [view, setView] = useState(0)
     const nextView = () => {
-        console.log(formData)
         setView(view + 1)
     }
     const lastView = () => setView(view - 1)
@@ -62,7 +79,6 @@ export default function CreatePetitionForm(props) {
                 method: 'POST',
                 body
             })
-            console.log((await res).ok)
             if ((await res).ok) {
                 window.location = '/dashboard'
             } else {

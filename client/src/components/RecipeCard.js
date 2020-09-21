@@ -19,7 +19,6 @@ export default (props = defaultProps) => {
     const dispatch = useDispatch()
     const currentId = useSelector(state => state.currentRecipe.id)
 
-    console.log(image_src)
     return (
         <Card margin='xsmall' height='small'  width='medium' 
              alignSelf={"center"} flex={false}

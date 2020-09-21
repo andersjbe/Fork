@@ -9,7 +9,6 @@ export default () => {
 
     function toggleView(e) {
         // e.preventDefault()
-        console.log(currentView)
         if (currentView === 'login') {
             setCurrentView('signup')
         } else {

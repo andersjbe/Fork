@@ -17,7 +17,6 @@ export const loadRecipe = recipeId => async (dispatch, getState) => {
         }
     } catch (e) {
         // const errData = await e.json()
-        console.log(e)
     }
 }
 

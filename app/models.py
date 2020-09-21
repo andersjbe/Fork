@@ -75,7 +75,9 @@ class Recipe(db.Model):
         }
 
     def to_details_dict(self):
-        # forks = [fork.to_preview_dict() for fork in self.forks]
+        from_recipe = {}
+        if self.from_recipe_id:
+            from_recipe = Recipe.query.get(self.from_recipe_id).to_preview_dict()
 
         return {
             'id': self.id,
@@ -84,8 +86,7 @@ class Recipe(db.Model):
             'ingredients': self.ingredients,
             'instructions': self.instructions,
             'image_src': self.image_src,
-            # 'from_recipe': self.from_recipe.to_preview_dict(),
-            # 'forks': forks,
+            'from_recipe': from_recipe,
             'user': {
                 'id': self.user.id,
                 'name': f'{self.user.first_name} {self.user.last_name}',

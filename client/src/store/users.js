@@ -21,7 +21,6 @@ export const signUp = (firstName, lastName, email, password) => async dispatch =
         dispatch(setUser(token, user))
     } catch (e) {
         const errData = await e.json()
-        console.log(errData)
     }
 }
 

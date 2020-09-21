@@ -10,7 +10,6 @@ const RecipeFeed = props => {
     const [recipes, setRecipes] = useState([]);
     const [hasMore, setHasMore] = useState(false)
 
-    console.log(props)
 
     useEffect(() => {
         const apiResponse = []
@@ -20,7 +19,6 @@ const RecipeFeed = props => {
                 if ('search' in props && typeof props['search'] === 'string') {
                     res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}`)
                     // apiResponse = await searchAPI(props['search'])
-                    console.log(apiResponse)
                 } else if ('category' in props && typeof props['category'] === 'string') {
                     res = await fetch(`${apiUrl}/recipes/category/${props['category']}`)
                 }
@@ -37,7 +35,6 @@ const RecipeFeed = props => {
                 }
             } catch (e) {
                 setRecipes([]);
-                console.log(res)
             }
         }
 
@@ -69,7 +66,6 @@ const RecipeFeed = props => {
                     throw res
                 }
             } catch (e) {
-                console.log(res)
             }
         }
 
