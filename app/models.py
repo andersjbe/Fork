@@ -79,6 +79,9 @@ class Recipe(db.Model):
         if self.from_recipe_id:
             from_recipe = Recipe.query.get(self.from_recipe_id).to_preview_dict()
 
+        forks = Recipe.query.filter(Recipe.from_recipe_id == self.id).all()
+        forked_obj = [fork.to_preview_dict() for fork in forks] 
+
         return {
             'id': self.id,
             'title': self.title,
@@ -87,6 +90,7 @@ class Recipe(db.Model):
             'instructions': self.instructions,
             'image_src': self.image_src,
             'from_recipe': from_recipe,
+            'forks': forked_obj,
             'user': {
                 'id': self.user.id,
                 'name': f'{self.user.first_name} {self.user.last_name}',

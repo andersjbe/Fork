@@ -11,7 +11,6 @@ bucket = s3.Bucket(name="andersjbe-fork")
 
 @recipe_routes.route('', methods=["POST"])
 def post_recipe():
-    # TODO upload image to s3 with boto3
     image_url = 'https://andersjbe-fork.s3-us-west-1.amazonaws.com/unnamed.jpg'
     if len(request.files) > 0:
         image = request.files['file']

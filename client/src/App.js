@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard'
 import PageLayout from './pages/PageLayout'
 import NotFound from './pages/NotFound'
 import Browse from './pages/browse'
+import UserPage from './pages/UserPage';
 
 const sessionId = localStorage.getItem(SESSION_ID)
 const sessionToken = localStorage.getItem(SESSION_TOKEN)
@@ -31,6 +32,11 @@ function App() {
                 <ProtectedRoute 
                     path='/browse'
                     component={() => <PageLayout page={Browse} />}
+                    currentUserId={sessionId}
+                />
+                <ProtectedRoute 
+                    path='/user'
+                    component={() => <PageLayout page={UserPage} />}
                     currentUserId={sessionId}
                 />
                 <ProtectedRoute

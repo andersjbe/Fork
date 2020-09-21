@@ -17,10 +17,10 @@ export default function CreatePetitionForm(props) {
         category: { category: 'Asian', id: 1 }
     }
 
-    const {currentRecipe} = useSelector(state => state)
+    const { currentRecipe } = useSelector(state => state)
     const location = useLocation()
     const fromRecipeId = new URLSearchParams(location.search).get('fork')
-    if(currentRecipe.id && fromRecipeId) {
+    if (currentRecipe.id && fromRecipeId) {
         forkedRecipe = currentRecipe
     }
 
@@ -127,9 +127,10 @@ export default function CreatePetitionForm(props) {
             height='large'
             pad='small'
             background="#fff"
-            // alignSelf='center'
+            margin='small'
+        // alignSelf='center'
         >
-            <CardHeader>
+            <CardHeader margin='xsmall'>
                 <Meter
                     max={formViews.length}
                     values={[{ value: view + 1 }]}
@@ -146,7 +147,7 @@ export default function CreatePetitionForm(props) {
 
                 {formViews[view]}
             </CardBody>
-            <CardFooter>
+            <CardFooter margin='xsmall'>
                 {view > 0 ? <Button label="< Previous" onClick={lastView} /> : <Box />}
                 {view < formViews.length - 1 ? <Button label="Next >" onClick={nextView} /> : null}
                 {view === formViews.length - 1 ? <Button label='Submit' onClick={() => submitForm()} primary /> : null}
@@ -347,37 +348,45 @@ function ImageView(props) {
     </>)
 }
 
-function SubmissionView(props) {
+function SubmissionView({ title, imagePreview, description, ingredients, instructions }) {
     return (
         <>
-            <Heading level={3} textAlign='center' alignSelf='center'>
-                {props.title}
-            </Heading>
+            <Heading level={3}>{title}</Heading>
 
-            <Box height="medium" width="medium" alignSelf='center' round='medium'>
+            <Card
+                width='large'
+                margin='xsmall'
+                alignSelf='center'
+                flex={false}
+            >
                 <Image
-                    fit="contain"
-                    src={props.imagePreview}
-                    alignSelf='center'
+                    src={imagePreview}
+                    fill
+                    fit='contain'
+                />
+            </Card>
+
+            <Box alignSelf='center' flex={false} width='large'>
+                <Paragraph alignSelf='center' fill pad='small'>{description}</Paragraph>
+            </Box>
+
+            <Box width='medium' alignSelf='center' flex={false}>
+                <Heading level={3}>Ingredients</Heading>
+                <List
+                    data={ingredients.map(ing => ({ ing }))}
+                    primaryKey='ing'
                 />
             </Box>
 
-            <Paragraph>
-                {props.description}
-            </Paragraph>
-
-            <List
-                alignSelf='center'
-                data={props.ingredients.map((ing, i) => ({ ingredient: ing }))}
-            />
-
-            <List
-                alignSelf='center'
-                data={props.instructions.map((ins, i) => ({ order: i + 1, ins: ins }))}
-                primaryKey='order'
-                secondaryKey='ins'
-            />
-
+            <Box width='large' alignSelf='center' align='center' flex={false}>
+                <Heading level={3}>Instructions</Heading>
+                <List
+                    data={instructions.map((inst, i) => ({ index: i + 1, inst }))}
+                    primaryKey='index'
+                    secondaryKey='inst'
+                    border={false}
+                />
+            </Box>
         </>
     )
 }

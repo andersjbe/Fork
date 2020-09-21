@@ -1,10 +1,14 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+import boto3
+from uuid import uuid4
 
 from app.models import User, db
 
 user_routes = Blueprint('users', __name__)
 
+s3 = boto3.resource('s3')
+bucket = s3.Bucket(name="andersjbe-fork")
 
 @user_routes.route('')
 def index():
@@ -12,14 +16,31 @@ def index():
     return {"users": [user.to_dict() for user in response]}
 
 
-@user_routes.route('/<int:id>')
+@user_routes.route('/<int:id>', methods={'GET', 'POST'})
 def get_user(id):
     user = User.query.filter(User.id == id).first()
-    print(user)
-    if user:
+    if user and request.method == 'GET':
         return {'user': user.to_dict()}
+    elif user and request.method == 'POST':
+        form = request.form
+        if form.get('firstName'):
+            user.first_name = form.get('firstName')
+        if form.get('lastName'):
+            user.last_name = form.get('lastName')
+        if form.get('email'):
+            user.email = form.get('email')
+        if form.get('password'):
+            user.encrypted_password = bcrypt.hashpw(form.get('password').encode('utf-8'), bcrypt.gensalt(14))
+        if len(request.files) > 0:
+            image = request.files['file']
+            key=f'{uuid4()}{image.filename}'
+            bucket.put_object(Key=key, Body=image, ContentType=image.content_type)
+            user.image_url = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
+        db.session.commit()
+        return user.to_dict()
     else:
         return {'message': 'User not found'}, 404
+
 
 
 @user_routes.route('/<int:id>/recipes')

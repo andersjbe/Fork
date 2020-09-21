@@ -1,4 +1,4 @@
-import { Box, Button, Card, CheckBox, Heading, Image, List, Paragraph } from 'grommet'
+import { Box, Button, Card, Carousel, CheckBox, Grid, Heading, Image, List, Paragraph } from 'grommet'
 import { Avatar } from 'grommet-controls'
 import { Italic } from 'grommet-icons'
 import React from 'react'
@@ -18,17 +18,21 @@ export default function RecipeDetails(props) {
         )
     }
 
-    const { id, from_recipe, title, image_src, user, description, ingredients, instructions } = currentRecipe
+    const { id, forks, from_recipe, title, image_src, user, description, ingredients, instructions } = currentRecipe
 
     return (
         <Box pad='small' flex={false} overflow='auto'  >
-            <Box margin='xsmall' flex={false}>
+            <Box margin='xsmall' flex={false} align='center'>
                 <Heading margin="xxsmall">{title}</Heading>
-                <Avatar image={user.image_url}
-                    title={user.name} />
-                <Link to={`/create-recipe?fork=${id}`} >
-                    <Button label='Fork' primary margin='xsmall' />
-                </Link>
+
+                <Grid gap='large' columns={['2fr', '1fr', '1fr']} rows={['1fr']} width='100%'>
+                    <Avatar image={user.image_url}
+                        title={user.name} />
+                    <Box />
+                    <Link to={`/create-recipe?fork=${id}`} >
+                        <Button label='Fork' primary margin='xsmall' alignSelf='end' />
+                    </Link>
+                </Grid>
 
             </Box>
 
@@ -73,6 +77,20 @@ export default function RecipeDetails(props) {
                     <Box flex={false}>
                         <Heading level={3}>Forked From:</Heading>
                         <RecipeCard recipe={{ ...from_recipe }} />
+                    </Box>
+                    : null
+            }
+
+            {
+                forks.length > 0 ?
+                    <Box flex={false} >
+                        <Heading level={3}>Forks:</Heading>
+                        <Carousel >
+                            {
+                                forks.map(fork => <RecipeCard recipe={{ ...fork }} />)
+                            }
+                        </Carousel>
+
                     </Box>
                     : null
             }

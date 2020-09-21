@@ -52,7 +52,7 @@ export default () => {
                     </Box>}
                     icon={false}
                     items={[
-                        { label: 'Account' },
+                        { label: 'Account', href: '/user'},
                         { label: 'Log Out', onClick: logOut }
                     ]}
                     dropAlign={{
