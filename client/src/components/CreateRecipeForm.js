@@ -40,9 +40,9 @@ export default function CreatePetitionForm(props) {
         instructions: instructions.filter(instruction => instruction).join('\r\n'),
         categoryId: category.id,
         userId,
-        fromRecipeId,
         file: image
     }
+    if (fromRecipeId) formData['fromRecipeId'] = fromRecipeId
 
     const [view, setView] = useState(0)
     const nextView = () => {
