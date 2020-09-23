@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import RecipeCard from './RecipeCard'
+import RecipeNotes from './RecipeNotes'
 
 export default function RecipeDetails(props) {
     const { currentRecipe } = useSelector(state => state)
@@ -18,7 +19,7 @@ export default function RecipeDetails(props) {
         )
     }
 
-    const { id, forks, from_recipe, title, image_src, user, description, ingredients, instructions } = currentRecipe
+    const { id, notes, forks, from_recipe, title, image_src, user, description, ingredients, instructions } = currentRecipe
 
     return (
         <Box pad='small' flex={false} overflow='auto'  >
@@ -50,56 +51,61 @@ export default function RecipeDetails(props) {
                 />
             </Card>
 
-            <Box alignSelf='center' flex={false} width='large'>
-                <Paragraph alignSelf='center' fill pad='small'>{description}</Paragraph>
-            </Box>
+            <Box width='80%' alignSelf='center'>
 
-            <Box width='medium' alignSelf='center' flex={false}>
-                <Heading level={3}>Ingredients</Heading>
-                <List
-                    data={ingredients.map(ing => ({ ing }))}
-                    primaryKey='ing'
-                />
-            </Box>
+                <Box alignSelf='center' flex={false} width='large'>
+                    <Paragraph alignSelf='center' fill pad='small'>{description}</Paragraph>
+                </Box>
 
-            <Box width='large' alignSelf='center' flex={false} alignContent='start'>
-                <Heading level={3}>Instructions</Heading>
-                <List
-                    alignSelf='center'
-                    data={instructions.map((inst, i) => ({ index: i + 1, inst }))}
-                    primaryKey='index'
-                    secondaryKey='inst'
-                    border={false}
-                    children={(item, i) => {
-                        if (item.inst) {
-                            return <Text>{item.inst}</Text>
-                        }
-                    }}
-                />
-            </Box>
+                <Heading alignSelf='start' level={3}>Ingredients</Heading>
+                <Box width='medium' alignSelf='center' flex={false}>
+                    <List
+                        data={ingredients.map(ing => ({ ing }))}
+                        primaryKey='ing'
+                    />
+                </Box>
 
-            {
-                from_recipe.id ?
-                    <Box flex={false}>
-                        <Heading level={3}>Forked From:</Heading>
-                        <RecipeCard recipe={{ ...from_recipe }} />
-                    </Box>
-                    : null
-            }
-
-            {
-                forks.length > 0 ?
-                    <Box flex={false} >
-                        <Heading level={3}>Forks:</Heading>
-                        <Carousel >
-                            {
-                                forks.map(fork => <RecipeCard recipe={{ ...fork }} />)
+                <Heading alignSelf='stretch' level={3}>Instructions</Heading>
+                <Box width='large' alignSelf='center' flex={false} alignContent='start'>
+                    <List
+                        alignSelf='center'
+                        data={instructions.map((inst, i) => ({ index: i + 1, inst }))}
+                        primaryKey='index'
+                        secondaryKey='inst'
+                        border={false}
+                        children={(item, i) => {
+                            if (item.inst) {
+                                return <Text>{item.inst}</Text>
                             }
-                        </Carousel>
+                        }}
+                    />
+                </Box>
 
-                    </Box>
-                    : null
-            }
+                <RecipeNotes recipeId={id} notes={notes} />
+
+                {
+                    from_recipe.id ?
+                        <><Heading level={3}>Forked From:</Heading>
+                            <Box flex={false}>
+                                <RecipeCard recipe={{ ...from_recipe }} />
+                            </Box></>
+                        : null
+                }
+
+                {
+                    forks.length > 0 ?
+                        <Box flex={false} >
+                            <Heading level={3}>Forks:</Heading>
+                            <Carousel >
+                                {
+                                    forks.map(fork => <RecipeCard recipe={{ ...fork }} />)
+                                }
+                            </Carousel>
+
+                        </Box>
+                        : null
+                }
+            </Box>
         </Box>
     )
 

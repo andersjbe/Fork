@@ -71,7 +71,9 @@ def get_recipe_details(id):
 
 @recipe_routes.route('/<int:id>/notes', methods=['POST'])
 def recipe_notes(id):
-    if request.json.get('body') == '' or not request.json.get('user_id'):
+
+    print(dict(request.json))
+    if request.json.get('body') == '' or not request.json.get('userId'):
         return {'message': 'Missing data'}, 401
 
     note_data = {

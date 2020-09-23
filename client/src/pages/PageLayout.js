@@ -4,7 +4,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 
 export default function PageLayout({ page: Page }) {
-    return (<Box fill>
+    return (<Box height='95%'>
         <Navbar />
         <Main width='100'  align='center' flex={false} fill>
             <Page />

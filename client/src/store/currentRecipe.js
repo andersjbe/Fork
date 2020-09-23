@@ -10,7 +10,7 @@ export const loadRecipe = recipeId => async (dispatch, getState) => {
         if (res.ok) {
             const data = await res.json()
             data.ingredients = data.ingredients.split(' | ')
-                                    .filter(ingredient => !ingredient.includes('None'))
+                .filter(ingredient => !ingredient.includes('None'))
             data.instructions = data.instructions.split('\r\n').filter(instruction => instruction)
             dispatch(setRecipe(data))
         } else {
@@ -28,7 +28,8 @@ const setRecipe = (data) => ({
     data
 })
 
-export default function reducer(state={id: null}, action) {
+
+export default function reducer(state = { id: null }, action) {
     switch (action.type) {
         case SET_RECIPE:
             return { ...action.data };

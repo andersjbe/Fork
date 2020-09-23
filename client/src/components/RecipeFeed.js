@@ -90,11 +90,10 @@ const RecipeFeed = props => {
             alignSelf='center'
             pad='small'
         >
-            { loading ? <Spinning kind='cube-grid' color='brand' /> : null}
             {
                 recipes.length > 0 && (<InfiniteScroll items={recipes} onMore={() => loadMore()} step={19}>
-                    {item => (
-                        <RecipeCard key={item.id} recipe={item} />
+                    {(item, i) => (
+                        <RecipeCard key={i} recipe={item} />
                     )}
                 </InfiniteScroll>)
             }
