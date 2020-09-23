@@ -42,7 +42,7 @@ def post_recipe():
 
 @recipe_routes.route('/category/<path:name>')
 def get_category_recipes(name):
-    offset = request.args.get('offset') if 'offset' in request.args else 0
+    offset = int(request.args.get('offset')) if 'offset' in request.args else 0
     category = RecipeCategory.query.filter(
         RecipeCategory.category == name).first()
     if category == None:
@@ -54,7 +54,7 @@ def get_category_recipes(name):
 @recipe_routes.route('/search')
 def search_recipes():
     term = request.args.get('term')
-    offset = request.args.get('offset') if 'offset' in request.args else 0
+    offset = int(request.args.get('offset')) if 'offset' in request.args else 0
     recipes = Recipe.query.filter((Recipe.title.ilike(f'%{term}%')) |
                                   (Recipe.description.ilike(f'%{term}%')) |
                                   (Recipe.ingredients.ilike(f'%{term}%')) |

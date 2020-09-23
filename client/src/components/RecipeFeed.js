@@ -57,7 +57,7 @@ const RecipeFeed = props => {
                     res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}&offset=${currentIndex}`)
                 } else if ('category' in props && typeof props['category'] === 'string') {
 
-                    res = await fetch(`${apiUrl}/recipes/${props['category']}?offset=${currentIndex}`)
+                    res = await fetch(`${apiUrl}/recipes/category/${props['category']}?offset=${currentIndex}`)
                 }
 
                 if (res && res.ok) {
@@ -98,7 +98,7 @@ const RecipeFeed = props => {
                     )}
                 </InfiniteScroll>)
             }
-            <Button onClick={loadMore} label="Get More recipes" />
+            {hasMore ? <Button onClick={loadMore} label="Get More recipes" /> : null}
         </Box>
     )
 

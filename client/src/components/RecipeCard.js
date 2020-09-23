@@ -49,8 +49,8 @@ export default (props = defaultProps) => {
                     <Text margin='xxsmall'>{`by ${name}`}</Text>
                 </Box>
 
-                <Box gridArea='tag' style={{position: 'relative'}}>
-                    <Tag style={{position: 'absolute', bottom: '0'}} alignSelf='end' pad='xsmall' size='medium' round='small' label={category} background='accent-2' />
+                <Box gridArea='tag' >
+                    <Tag  alignSelf='end' pad='xsmall' size='medium' round='small' label={category} background='accent-2' />
                 </Box>
             </Grid>
             <CardFooter />
