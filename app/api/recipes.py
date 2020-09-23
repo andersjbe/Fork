@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 import boto3
 from uuid import uuid4
 
-from ..models import db, Recipe, RecipeCategory
+from ..models import db, Recipe, RecipeCategory, Note
 
 recipe_routes = Blueprint('recipes', __name__)
 
@@ -68,3 +68,19 @@ def get_recipe_details(id):
     if(recipe is None):
         return {'message': 'Recipe not found'}, 404
     return recipe.to_details_dict()
+
+@recipe_routes.route('/<int:id>/notes', methods=['POST'])
+def recipe_notes(id):
+    if request.json.get('body') == '' or not request.json.get('user_id'):
+        return {'message': 'Missing data'}, 401
+
+    note_data = {
+        'body': request.json.get('body'),
+        'user_id': request.json.get('userId'),
+        'recipe_id': id
+    }
+
+    note = Note(**note_data)
+    db.session.add(note)
+    db.session.commit()
+    return {'note': note.to_dict()}, 200

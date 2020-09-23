@@ -58,9 +58,8 @@ class Recipe(db.Model):
     category_id = db.Column(db.Integer, db.ForeignKey('recipe_categories.id'))
 
     user = db.relationship("User", back_populates="recipes")
-    from_recipe = db.relationship("Recipe", join_depth=1, backref=db.backref('forks', remote_side="Recipe.id"))
-    forks = []
     category = db.relationship('RecipeCategory', back_populates="recipes")
+    notes = db.relationship('Note')
 
     def to_preview_dict(self):
         return {
@@ -99,5 +98,23 @@ class Recipe(db.Model):
             'category': {
                 'id': self.category.id,
                 'category': self.category.category
-            }
+            },
+            'notes': [note.to_dict() for note in self.notes]
+        }
+
+class Note(db.Model):
+    __tablename__ = 'notes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    body = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
+
+    user = db.relationship('User')
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'body': self.body,
+            'user': self.user.to_dict()
         }

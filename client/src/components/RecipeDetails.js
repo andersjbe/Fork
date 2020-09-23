@@ -1,4 +1,4 @@
-import { Box, Button, Card, Carousel, CheckBox, Grid, Heading, Image, List, Paragraph } from 'grommet'
+import { Box, Button, Card, Carousel, CheckBox, Grid, Heading, Image, List, Paragraph, Text } from 'grommet'
 import { Avatar } from 'grommet-controls'
 import { Italic } from 'grommet-icons'
 import React from 'react'
@@ -62,13 +62,19 @@ export default function RecipeDetails(props) {
                 />
             </Box>
 
-            <Box width='large' alignSelf='center' flex={false}>
+            <Box width='large' alignSelf='center' flex={false} alignContent='start'>
                 <Heading level={3}>Instructions</Heading>
                 <List
+                    alignSelf='center'
                     data={instructions.map((inst, i) => ({ index: i + 1, inst }))}
                     primaryKey='index'
                     secondaryKey='inst'
                     border={false}
+                    children={(item, i) => {
+                        if (item.inst) {
+                            return <Text>{item.inst}</Text>
+                        }
+                    }}
                 />
             </Box>
 
