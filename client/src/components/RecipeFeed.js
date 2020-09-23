@@ -1,14 +1,15 @@
-import { Box, InfiniteScroll } from 'grommet';
-import React, { useEffect, useState } from 'react'
+import { Box, Button, InfiniteScroll } from 'grommet';
+import { Spinning } from 'grommet-controls';
+import React, { useEffect,  useState } from 'react'
 
 import { apiUrl } from '../config'
 import RecipeCard from './RecipeCard'
-import { searchAPI } from '../store/mealDb'
 
 const RecipeFeed = props => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [recipes, setRecipes] = useState([]);
-    const [hasMore, setHasMore] = useState(false)
+    const [hasMore, setHasMore] = useState(true)
+    const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
@@ -38,12 +39,14 @@ const RecipeFeed = props => {
             }
         }
 
+        setLoading(true)
         fetchRecipes()
+        setLoading(false)
     }, [])
 
     const loadMore = () => {
-        console.log('MORE')
         const fetchMore = async () => {
+            console.log(hasMore)
             if (!hasMore) {
                 return
             }
@@ -53,7 +56,7 @@ const RecipeFeed = props => {
                 if ('search' in props && typeof props['search'] === 'string') {
                     res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}&offset=${currentIndex}`)
                 } else if ('category' in props && typeof props['category'] === 'string') {
-                    
+
                     res = await fetch(`${apiUrl}/recipes/${props['category']}?offset=${currentIndex}`)
                 }
 
@@ -64,15 +67,18 @@ const RecipeFeed = props => {
                     if (data.recipes.length < 20) {
                         setHasMore(false)
                     }
+                    // forceUpdate()
                 } else if (!res.ok) {
                     throw res
                 }
             } catch (e) {
+                console.log(e)
             }
         }
 
+        setLoading(true)
         fetchMore()
-
+        setLoading(false)
     }
 
     return (
@@ -84,12 +90,15 @@ const RecipeFeed = props => {
             alignSelf='center'
             pad='small'
         >
-
-            <InfiniteScroll items={recipes} onMore={() => loadMore()} step={10}>
-                {item => (
-                    <RecipeCard key={item.id} recipe={item} />
-                )}
-            </InfiniteScroll>
+            { loading ? <Spinning kind='cube-grid' color='brand' /> : null}
+            {
+                recipes.length > 0 && (<InfiniteScroll items={recipes} onMore={() => loadMore()} step={19}>
+                    {item => (
+                        <RecipeCard key={item.id} recipe={item} />
+                    )}
+                </InfiniteScroll>)
+            }
+            <Button onClick={loadMore} label="Get More recipes" />
         </Box>
     )
 
