@@ -10,7 +10,8 @@ export const loadRecipe = recipeId => async (dispatch, getState) => {
         if (res.ok) {
             const data = await res.json()
             data.ingredients = data.ingredients.split(' | ')
-            data.instructions = data.instructions.split('\r\n')
+                                    .filter(ingredient => !ingredient.includes('None'))
+            data.instructions = data.instructions.split('\r\n').filter(instruction => instruction)
             dispatch(setRecipe(data))
         } else {
             throw res

@@ -11,6 +11,9 @@ with app.app_context():
     # Users User.create(first_name='', last_name='', email='', password='')
     fork = User.create(first_name='Fork', last_name='App',
                        email='fork@fork.io', password='fork')
+    meal_db = User.create(first_name='Meal', last_name='DB',
+                       email='mealDB@fork.io', password='fork',
+                       image_url='https://andersjbe-fork.s3-us-west-1.amazonaws.com/24129698_1625099450882930_8164732674337750037_n.png')
     ben = User.create(first_name='Ben', last_name='Anderson',
                       email='andersjbe@gmail.com', password='fork')
     ian = User.create(first_name='Ian', last_name='Bentley',
@@ -23,6 +26,7 @@ with app.app_context():
                          email='angela@aa.io', password='fork')
 
     db.session.add(fork)
+    db.session.add(meal_db)
     db.session.add(ben)
     db.session.add(ian)
     db.session.add(javier)

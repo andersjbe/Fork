@@ -42,6 +42,7 @@ const RecipeFeed = props => {
     }, [])
 
     const loadMore = () => {
+        console.log('MORE')
         const fetchMore = async () => {
             if (!hasMore) {
                 return
@@ -84,7 +85,7 @@ const RecipeFeed = props => {
             pad='small'
         >
 
-            <InfiniteScroll items={recipes} onMore={loadMore} step={10}>
+            <InfiniteScroll items={recipes} onMore={() => loadMore()} step={10}>
                 {item => (
                     <RecipeCard key={item.id} recipe={item} />
                 )}
