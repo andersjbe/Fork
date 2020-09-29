@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux";
 import { Form, EmailInputField, PasswordInputField, TextInputField } from 'grommet-controls'
-import { Text, Anchor, Button } from "grommet";
+import { Text, Anchor, Button, Box } from "grommet";
 
 import { signUp, SESSION_ID } from '../store/users'
 import { useHistory } from "react-router-dom";
@@ -16,9 +16,9 @@ export default props => {
     const [password, setPassword] = useState('')
 
     const submitSignUp = async e => {
-        await dispatch(signUp(firstName, lastName, email, password))
+        await dispatch(signUp(firstName, lastName, email, password, props.setAuthErrors))
         if (localStorage.getItem(SESSION_ID)) {
-            history.push('/history')
+            window.location = '/dashboard'
         }
     }
 
@@ -58,7 +58,10 @@ export default props => {
                     onChange={e => setPassword(e.target.value)}
                 />
 
-                <Button primary label='Sign Up' type='submit' />
+                <Box direction='row' justify='around'>
+                    <Button primary label='Sign Up' type='submit' />
+                </Box>
+
             </Form>
         </div>
     )

@@ -13,7 +13,9 @@ export default function Browse() {
         action['search'] = query.get('search')
     } else if (query.get('category')) {
         action['category'] = query.get('category')
-    } 
+    } else if (query.get('user')) {
+        
+    }
 
 
     return (

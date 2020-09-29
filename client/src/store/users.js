@@ -3,7 +3,7 @@ import { apiUrl } from '../config'
 export const SESSION_TOKEN = 'fork/SESSION_TOKEN'
 export const SESSION_ID = 'fork/SESSION_ID'
 
-export const signUp = (firstName, lastName, email, password) => async dispatch => {
+export const signUp = (firstName, lastName, email, password, setAuthErrors) => async dispatch => {
     try {
         const res = await fetch(`${apiUrl}/users/signup`, {
             method: 'POST',
@@ -21,10 +21,11 @@ export const signUp = (firstName, lastName, email, password) => async dispatch =
         dispatch(setUser(token, user))
     } catch (e) {
         const errData = await e.json()
+        setAuthErrors(errData.messages)
     }
 }
 
-export const logIn = (email, password) => async dispatch => {
+export const logIn = (email, password, setAuthErrors) => async dispatch => {
     try {
         const res = await fetch(`${apiUrl}/users/login`, {
             method: 'POST',
@@ -32,8 +33,9 @@ export const logIn = (email, password) => async dispatch => {
             body: JSON.stringify({ email, password })
         })
 
-        if (!res.ok) {
+        if (!res.ok ) {
             throw res
+            
         }
 
         const { user, token } = await res.json()
@@ -42,6 +44,7 @@ export const logIn = (email, password) => async dispatch => {
         dispatch(setUser(token, user))
     } catch (e) {
         const errData = await e.json()
+        setAuthErrors([errData.message])
         console.log(errData)
     }
 }

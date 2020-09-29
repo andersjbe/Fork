@@ -46,13 +46,13 @@ def get_user(id):
 
 @user_routes.route('/<int:id>/recipes')
 def get_user_recipes(id):
-    user = User.query.filter(User.id == id).first()
+    user = User.query.get(id)
     if user:
         offset = request.args.get('offset') if 'offset' in request.args else 0
         recipes = user.recipes[offset:offset+20]
         return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
     else:
-        return {'message': 'User not found'}, 404
+        return {'message': 'User not found', 'recipes': []}, 404
 
 
 @user_routes.route('/login', methods=['POST'])

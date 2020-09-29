@@ -29,12 +29,12 @@ function App() {
     return (
         <BrowserRouter>
             <Switch>
-                <ProtectedRoute 
+                <ProtectedRoute
                     path='/browse'
                     component={() => <PageLayout page={Browse} />}
                     currentUserId={sessionId}
                 />
-                <ProtectedRoute 
+                <ProtectedRoute
                     path='/user'
                     component={() => <PageLayout page={UserPage} />}
                     currentUserId={sessionId}
@@ -57,6 +57,12 @@ function App() {
                     currentUserId={sessionId}
                     exact
                 />
+                    <AuthRoute
+                        path='/'
+                        component={Splash}
+                        currentUserId={sessionId}
+                        exact
+                    />
                 <ProtectedRoute
                     path=''
                     component={() => <PageLayout page={NotFound} />}
@@ -64,12 +70,6 @@ function App() {
                     exact
                 />
             </Switch>
-            <AuthRoute
-                path='/'
-                component={Splash}
-                currentUserId={sessionId}
-                exact
-            />
         </BrowserRouter>
     );
 }

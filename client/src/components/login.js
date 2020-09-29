@@ -1,24 +1,33 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Form, EmailInputField, PasswordInputField, validators } from 'grommet-controls'
-import { Text, Anchor, Button } from "grommet";
-import { useHistory } from 'react-router-dom'
+import { Text, Anchor, Button, Box } from "grommet";
+import { Redirect, useHistory } from 'react-router-dom'
 
 import { logIn, SESSION_ID } from '../store/users'
 
 export default function Login(props) {
     const dispatch = useDispatch()
-    const history = useHistory()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const submitLogin = async () => {
-        await dispatch(logIn(email, password))
+        await dispatch(logIn(email, password, props.setAuthErrors))
         if (localStorage.getItem(SESSION_ID)) {
-            history.push('/dashboard')
+            window.location = '/dashboard'
         }
     }
+
+    const demoLogin = async () => {
+        setEmail('fork@fork.io')
+        setPassword('fork')
+        await dispatch(logIn('fork@fork.io', 'fork'))
+        if (localStorage.getItem(SESSION_ID)) {
+            window.location = '/dashboard'
+        }
+    }
+
 
     return (
         <div>
@@ -41,12 +50,10 @@ export default function Login(props) {
                     onChange={e => setPassword(e.target.value)}
                 />
 
-                <Button primary label='Log In' type='submit' />
-                <Button secondary label='Demo User' onClick={() => {
-                    setEmail('fork@fork.io')
-                    setPassword('fork')
-                    submitLogin()
-                }} />
+                <Box direction='row' justify='around'>
+                    <Button primary label='Log In' type='submit' />
+                    <Button secondary label='Demo User' onClick={demoLogin} />
+                </Box>
             </Form>
         </div>
     )
