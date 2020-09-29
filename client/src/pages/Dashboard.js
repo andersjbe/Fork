@@ -3,10 +3,11 @@ import { Heading, Box } from 'grommet'
 import { Tag } from 'grommet-controls'
 
 import { apiUrl } from '../config'
+import { useHistory } from 'react-router-dom'
 
 export default function Dashboard(props) {
     const [categories, setCategories] = useState([])
-    const [clicked, setClicked] = useState('')
+    const history = useHistory()
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -31,7 +32,7 @@ export default function Dashboard(props) {
                     <Tag label={category.category} key={i} 
                         margin='xsmall' size='large' round='medium' 
                         pad='xsmall' background='accent-2' 
-                        onClick={() => window.location = `/browse?category=${category.category}`}
+                        onClick={() => history.push(`/browse?category=${category.category}`)}
                     />
                 ))}
             </Box>

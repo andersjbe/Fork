@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 import boto3
 from uuid import uuid4
+import bcrypt
 
 from app.models import User, db
 
@@ -35,7 +36,7 @@ def get_user(id):
             image = request.files['file']
             key=f'{uuid4()}{image.filename}'
             bucket.put_object(Key=key, Body=image, ContentType=image.content_type)
-            user.image_src = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
+            user.image_url = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
         db.session.commit()
         return user.to_dict()
     else:

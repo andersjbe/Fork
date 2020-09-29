@@ -69,6 +69,7 @@ class Recipe(db.Model):
     user = db.relationship("User", back_populates="recipes")
     category = db.relationship('RecipeCategory', back_populates="recipes")
     notes = db.relationship('Note')
+    # collections = db.relationship('Collection', secondary='collected_recipes', backref=db.backref('recipes'))
 
     def to_preview_dict(self):
         return {
@@ -133,9 +134,9 @@ class Collection(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     
-    recipes = db.relationship('Recipe', secondary=CollectedRecipe)
+    recipes = db.relationship('Recipe', secondary='collected_recipes', backref=db.backref('collections'))
 
     def to_dict(self):
         return {

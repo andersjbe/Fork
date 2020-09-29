@@ -6,9 +6,11 @@ import { IconButton } from 'grommet-controls'
 import { apiUrl } from '../config'
 import { SESSION_ID } from '../store/users'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export default function CreatePetitionForm(props) {
+
+
     let forkedRecipe = {
         title: "",
         description: "",
@@ -19,6 +21,7 @@ export default function CreatePetitionForm(props) {
 
     const { currentRecipe } = useSelector(state => state)
     const location = useLocation()
+    const history = useHistory()
     const fromRecipeId = new URLSearchParams(location.search).get('fork')
     if (currentRecipe.id && fromRecipeId) {
         forkedRecipe = currentRecipe
@@ -80,7 +83,7 @@ export default function CreatePetitionForm(props) {
                 body
             })
             if ((await res).ok) {
-                window.location = '/dashboard'
+                history.push('/dashboard')
             } else {
                 setErrors([...errors, 'Something went wrong, please try again later. We apologize for the inconvenience'])
             }

@@ -22,8 +22,9 @@ export default function RecipeDetails(props) {
     const { id, notes, forks, from_recipe, title, image_src, user, description, ingredients, instructions } = currentRecipe
 
     return (
-        <Box pad='small' flex={false} overflow='auto'  >
-            <Box margin='xsmall' flex={false} align='center'>
+        <Box pad='small' flex={false} overflow='auto' >
+            <Box fill='horizontal' margin='xsmall' flex={false} align='center' background='background'
+                style={{position: 'sticky', top: -12}} pad='small' width='large' alignSelf='center'>
                 <Heading margin="xxsmall">{title}</Heading>
 
                 <Grid gap='large' columns={['2fr', '1fr', '1fr']} rows={['1fr']} width='100%'>

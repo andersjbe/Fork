@@ -1,16 +1,15 @@
-import { Anchor, Avatar, Button, Header, Menu, Nav, Box, Form, TextInput } from 'grommet'
+import { Anchor, Avatar, Button, Header, Menu, Nav, Box, Form,  TextInput } from 'grommet'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { AddCircle, Github, Search } from 'grommet-icons'
-import { Link, Redirect } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 
 import { logOut } from '../store/users'
 
 export default () => {
     const { auth } = useSelector(state => state)
-
-    const { first_name, last_name, image_url, email } = useSelector(state => state.auth)
-
+    const history = useHistory()
+    
     return (
         <Header height='xxsmall' background='brand' style={{ position: 'sticky', top: '0' }} >
             <Nav margin='small' direction='row'>
@@ -37,7 +36,7 @@ export default () => {
             </Nav>
 
             <Box background='#fff' round='large'>
-                <Form onSubmit={({value}) => window.location = `/browse?search=${value['search']}`}>
+                <Form onSubmit={({value}) => history.push(`/browse?search=${value['search']}`)}>
                     <TextInput name='search' plain size='small' icon={<Search />}  /> 
                 </Form>
             </Box>

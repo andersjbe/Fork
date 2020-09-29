@@ -1,6 +1,6 @@
-import { Box, Button, InfiniteScroll } from 'grommet';
+import { Box, Button, InfiniteScroll, Text } from 'grommet';
 import { Spinning } from 'grommet-controls';
-import React, { useEffect,  useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { apiUrl } from '../config'
 import RecipeCard from './RecipeCard'
@@ -9,7 +9,7 @@ const RecipeFeed = props => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [recipes, setRecipes] = useState([]);
     const [hasMore, setHasMore] = useState(true)
-    const [loading, setLoading] = useState(false)
+    // const [loading, setLoading] = useState(false)
 
 
     useEffect(() => {
@@ -39,10 +39,8 @@ const RecipeFeed = props => {
             }
         }
 
-        setLoading(true)
         fetchRecipes()
-        setLoading(false)
-    }, [])
+    }, [props])
 
     const loadMore = () => {
         const fetchMore = async () => {
@@ -76,9 +74,23 @@ const RecipeFeed = props => {
             }
         }
 
-        setLoading(true)
         fetchMore()
-        setLoading(false)
+    }
+
+    if (recipes.length === 0) {
+        return (
+            <Box
+                id='feedbox'
+                width={'m%'}
+                fill='vertical'
+                overflow={{ vertical: 'auto' }}
+                flex={false}
+                alignSelf='center'
+                pad='small'
+            >
+                <Text>No recipes found, try searching for something else</Text>
+            </Box>
+        )
     }
 
     return (
