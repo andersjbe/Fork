@@ -15,6 +15,7 @@ class User(db.Model):
     image_url = db.Column(db.String, nullable=False)
 
     recipes = db.relationship("Recipe", back_populates="user")
+    collections = db.relationship("Collection")
 
     def to_dict(self):
         return {
@@ -22,7 +23,8 @@ class User(db.Model):
             "first_name": self.first_name,
             'last_name': self.last_name,
             "email": self.email,
-            'image_url': self.image_url
+            'image_url': self.image_url,
+            'collections': [{'id': colection.id, 'name': collection.name} for collection in self.collections]
         }
 
     @classmethod
@@ -41,6 +43,13 @@ class RecipeCategory(db.Model):
     category = db.Column(db.String(50), nullable=False)
 
     recipes = db.relationship("Recipe", back_populates="category")
+
+class CollectedRecipe(db.Model):
+    __tablename__ = 'collected_recipes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'), nullable=False)
+    collection_id = db.Column(db.Integer, db.ForeignKey('collections.id'), nullable=False)
 
 
 class Recipe(db.Model):
@@ -99,7 +108,7 @@ class Recipe(db.Model):
                 'id': self.category.id,
                 'category': self.category.category
             },
-            'notes': [note.to_dict() for note in self.notes]
+            'notes': [note.to_dict() for note in reversed(self.notes)]
         }
 
 class Note(db.Model):
@@ -117,4 +126,18 @@ class Note(db.Model):
             'id': self.id,
             'body': self.body,
             'user': self.user.to_dict()
+        }
+
+class Collection(db.Model):
+    __tablename__ = 'collections'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    
+    recipes = db.relationship('Recipe', secondary=CollectedRecipe)
+
+    def to_dict(self):
+        return {
+            'recipes': {recipe.id: recipe.to_preview_dict() for recipe in self.recipes}
         }

@@ -35,7 +35,7 @@ def get_user(id):
             image = request.files['file']
             key=f'{uuid4()}{image.filename}'
             bucket.put_object(Key=key, Body=image, ContentType=image.content_type)
-            user.image_url = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
+            user.image_src = f'https://andersjbe-fork.s3-us-west-1.amazonaws.com/{key}'
         db.session.commit()
         return user.to_dict()
     else:

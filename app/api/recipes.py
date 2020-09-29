@@ -62,6 +62,7 @@ def search_recipes():
     return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
 
 
+
 @recipe_routes.route('/<int:id>')
 def get_recipe_details(id):
     recipe = Recipe.query.get(id)

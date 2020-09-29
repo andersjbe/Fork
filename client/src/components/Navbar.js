@@ -1,4 +1,4 @@
-import { Anchor, Avatar, Header, Menu, Nav, Box, Form, TextInput } from 'grommet'
+import { Anchor, Avatar, Button, Header, Menu, Nav, Box, Form, TextInput } from 'grommet'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { AddCircle, Github, Search } from 'grommet-icons'
@@ -44,7 +44,7 @@ export default () => {
 
             <Nav margin='small' direction='row'>
                 <Link to='/create-recipe' style={{alignSelf: 'center'}}>
-                    <AddCircle color='background' />
+                    <Button primary label='New' icon={ <AddCircle color='background' />} />
                 </Link>
                 <Menu
                     label={<Box>
