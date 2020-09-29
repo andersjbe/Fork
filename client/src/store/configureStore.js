@@ -7,7 +7,6 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 
 import auth from './users'
 import currentRecipe from './currentRecipe'
-import mealDB from './mealDb'
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -21,7 +20,6 @@ const reducer = persistReducer(
     combineReducers({
         auth,
         currentRecipe,
-        mealDB
     }))
 
 export default () => {

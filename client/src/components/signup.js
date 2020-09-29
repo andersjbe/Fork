@@ -4,11 +4,9 @@ import { Form, EmailInputField, PasswordInputField, TextInputField } from 'gromm
 import { Text, Anchor, Button, Box } from "grommet";
 
 import { signUp, SESSION_ID } from '../store/users'
-import { useHistory } from "react-router-dom";
 
 export default props => {
     const dispatch = useDispatch()
-    const history = useHistory()
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')

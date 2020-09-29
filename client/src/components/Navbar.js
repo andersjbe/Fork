@@ -1,8 +1,10 @@
-import { Anchor, Avatar, Button, Header, Menu, Nav, Box, Form,  TextInput } from 'grommet'
+import { 
+    Anchor, Avatar, Button, Header, Menu, Nav, Box, Form,  TextInput 
+} from 'grommet'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { AddCircle, Github, Search } from 'grommet-icons'
-import { Link, Redirect, useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import { logOut } from '../store/users'
 

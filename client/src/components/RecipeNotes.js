@@ -1,9 +1,8 @@
 import { Box, Button, Card, CardBody, CardFooter, CardHeader, Heading, Paragraph, TextArea } from 'grommet'
 import { Avatar } from 'grommet-controls'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { apiUrl } from '../config'
-import { addNote } from '../store/currentRecipe'
 
 export default function RecipeNotes(props) {
     const [notes, setNotes] = useState(props.notes)

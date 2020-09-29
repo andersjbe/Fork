@@ -1,4 +1,4 @@
-import { Box, Card, CardHeader, CardBody, Text, Image, Grid, CardFooter } from 'grommet'
+import { Box, Card, Text, Grid, CardFooter } from 'grommet'
 import { Tag } from 'grommet-controls'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,7 +23,7 @@ export default (props = defaultProps) => {
         <Card margin='xsmall' height='small'  width='medium' 
              alignSelf={"center"} flex={false}
             onClick={() => dispatch(loadRecipe(id))}
-            background={ id == currentId ? '#fde74c' : '#fff'}
+            background={ id === currentId ? '#fde74c' : '#fff'}
         >
             <Grid
                 rows={['85%', '15%']}
@@ -57,17 +57,3 @@ export default (props = defaultProps) => {
         </ Card>
     )
 }
-
-{/* <Grid
-    rows={['xxsmall', 'xxsmall', 'xxsmall']}
-    columns={['xsmall', 'small']}
-    gap='small'
-    areas={[
-        { name: 'image', start: [0, 0], end: [0, 2] }
-        { name: 'title', start: [1, 0], end: [1, 0] }
-        { name: 'author', start: [1, 1], end: [1, 1] }
-        { name: 'tag', start: [1, 2], end [1, 2]}
-    ]}
->
-
-</Grid> */}

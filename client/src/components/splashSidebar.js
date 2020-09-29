@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import Login from './login'
 import Signup from './signup'
-import { Box, Card, Heading, Paragraph, Text } from 'grommet'
+import { Box, Card, Heading, Text } from 'grommet'
 
 export default () => {
     const [currentView, setCurrentView] = useState('login')

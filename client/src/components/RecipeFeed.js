@@ -1,5 +1,4 @@
 import { Box, Button, InfiniteScroll, Text } from 'grommet';
-import { Spinning } from 'grommet-controls';
 import React, { useEffect, useState } from 'react'
 
 import { apiUrl } from '../config'
@@ -22,7 +21,9 @@ const RecipeFeed = props => {
                     // apiResponse = await searchAPI(props['search'])
                 } else if ('category' in props && typeof props['category'] === 'string') {
                     res = await fetch(`${apiUrl}/recipes/category/${props['category']}`)
-                }
+                } else if ('user' in props && typeof props['user'] === 'string') {
+                    res = await fetch(`${apiUrl}/users/${props['user']}/recipes`)
+                } 
 
                 if (res && res.ok) {
                     const data = await res.json()
@@ -56,7 +57,9 @@ const RecipeFeed = props => {
                 } else if ('category' in props && typeof props['category'] === 'string') {
 
                     res = await fetch(`${apiUrl}/recipes/category/${props['category']}?offset=${currentIndex}`)
-                }
+                } else if ('user' in props && typeof props['user'] === 'string') {
+                    res = await fetch(`${apiUrl}/users/${props['user']}/recipes?offset=${currentIndex}`)
+                } 
 
                 if (res && res.ok) {
                     const data = await res.json()

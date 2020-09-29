@@ -1,6 +1,7 @@
-import { Box, Button, Card, Carousel, CheckBox, Grid, Heading, Image, List, Paragraph, Text } from 'grommet'
+import { 
+    Box, Button, Card, Carousel, Grid, Heading, Image, List, Paragraph, Text 
+} from 'grommet'
 import { Avatar } from 'grommet-controls'
-import { Italic } from 'grommet-icons'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -24,12 +25,15 @@ export default function RecipeDetails(props) {
     return (
         <Box pad='small' flex={false} overflow='auto' >
             <Box fill='horizontal' margin='xsmall' flex={false} align='center' background='background'
-                style={{position: 'sticky', top: -12}} pad='small' width='large' alignSelf='center'>
+                style={{ position: 'sticky', top: -12 }} pad='small' width='large' alignSelf='center'>
                 <Heading margin="xxsmall">{title}</Heading>
 
                 <Grid gap='large' columns={['2fr', '1fr', '1fr']} rows={['1fr']} width='100%'>
-                    <Avatar image={user.image_url}
-                        title={user.name} />
+                    <Link to={`/browse?user=${user.id}`}>
+                        <Avatar image={user.image_url}
+                            title={user.name} />
+                    </Link>
+
                     <Box />
                     <Link to={`/create-recipe?fork=${id}`} >
                         <Button label='Fork' primary margin='xsmall' alignSelf='end' />

@@ -1,8 +1,7 @@
 import React, { useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
-import { Form, EmailInputField, PasswordInputField, validators } from 'grommet-controls'
+import { useDispatch } from "react-redux";
+import { Form, EmailInputField, PasswordInputField } from 'grommet-controls'
 import { Text, Anchor, Button, Box } from "grommet";
-import { Redirect, useHistory } from 'react-router-dom'
 
 import { logIn, SESSION_ID } from '../store/users'
 

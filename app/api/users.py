@@ -48,7 +48,7 @@ def get_user(id):
 def get_user_recipes(id):
     user = User.query.get(id)
     if user:
-        offset = request.args.get('offset') if 'offset' in request.args else 0
+        offset = int(request.args.get('offset')) if 'offset' in request.args else 0
         recipes = user.recipes[offset:offset+20]
         return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}
     else:

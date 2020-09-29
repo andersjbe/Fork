@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Switch } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { fetchUserDetails, SESSION_ID, SESSION_TOKEN } from './store/users'
 import Splash from './pages/splash'
@@ -24,7 +24,7 @@ function App() {
         if (sessionId && sessionToken) {
             dispatch(fetchUserDetails(sessionToken, sessionId));
         }
-    }, [])
+    }, [dispatch])
 
     return (
         <BrowserRouter>

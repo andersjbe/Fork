@@ -1,10 +1,11 @@
-import { Box, Grid, Card, CardBody, CardHeader,  Heading,  Button } from 'grommet'
+import { Box, Grid, Card, CardBody, CardHeader, Heading, Button } from 'grommet'
 import { Avatar, EmailInputField, Form, PasswordInputField, TextInputField } from 'grommet-controls'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { apiUrl } from '../config'
-import { SESSION_ID, SESSION_TOKEN, fetchUserDetails } from '../store/users'
+import { SESSION_ID } from '../store/users'
 
 export default function UserPage() {
     const { auth } = useSelector(state => state)
@@ -39,7 +40,7 @@ export default function UserPage() {
                 body
             })
 
-            if(res.ok) {
+            if (res.ok) {
                 // fetchUserDetails(SESSION_TOKEN, SESSION_ID)
                 window.location = '/user'
             } else {
@@ -59,6 +60,13 @@ export default function UserPage() {
                 subTitle={auth.email}
                 size='large'
             />
+        </Box>
+
+        <Box alignSelf='center' margin='small'>
+
+            <Link to={`/browse?user=${auth.id}`}>
+                <Button primary alignSelf='center' label='My Recipes' />
+            </Link>
         </Box>
 
         <Card alignContent='center' width='medium' height='large' background='#fff' pad='small'>
@@ -83,10 +91,10 @@ export default function UserPage() {
 
                     <PasswordInputField label="Password" value={password}
                         onChange={e => setPassword(e.target.value)} />
-                    
+
                     <label htmlFor='profilePic'>Profile Picture</label>
                     <input name='profilePic' type='file' onChange={e => setImage(e.target.files.item(0))} accept='image/*' />
-                
+
                     <Button label='Submit' type='submit' margin='small' alignSelf='center' />
                 </Form>
             </CardBody>
