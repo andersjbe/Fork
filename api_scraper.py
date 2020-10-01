@@ -41,18 +41,30 @@ def convert_api_obj(obj):
 alphabet = 'abcdefghjklmnopqrstuvwxyz'
 
 
-with app.app_context():
-    for letter in alphabet:
-        r = requests.get(
-            'https://www.themealdb.com/api/json/v2/9973533/search.php', params={'f': letter})
-        data = r.json().get('meals')
-        if data != None:
-            for meal in data:
-                convert_api_obj(meal)
+# with app.app_context():
+#     for letter in alphabet:
+#         r = requests.get(
+#             'https://www.themealdb.com/api/json/v2/9973533/search.php', params={'f': letter})
+#         data = r.json().get('meals')
+#         if data != None:
+#             for meal in data:
+#                 convert_api_obj(meal)
         
-    db.session.commit()
+#     db.session.commit()
 
 
 
 # for letter in alphabet:
 
+url = "https://bigovenvolodimir-kudriachenkov1.p.rapidapi.com/getRandomRecipe"
+
+payload = ""
+headers = {
+    'x-rapidapi-host': "BigOvenvolodimir-kudriachenkoV1.p.rapidapi.com",
+    'x-rapidapi-key': "5cbad61472mshf96e6552c76437bp102f16jsnd63329b999b1",
+    'content-type': "application/x-www-form-urlencoded"
+    }
+
+response = requests.request("POST", url, data=payload, headers=headers)
+
+print(response.text)

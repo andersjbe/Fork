@@ -23,7 +23,11 @@ const RecipeFeed = props => {
                     res = await fetch(`${apiUrl}/recipes/category/${props['category']}`)
                 } else if ('user' in props && typeof props['user'] === 'string') {
                     res = await fetch(`${apiUrl}/users/${props['user']}/recipes`)
-                } 
+                } else if ('featured' in props) {
+                    setRecipes(props.featured)
+                    setHasMore(false)
+                    return
+                }
 
                 if (res && res.ok) {
                     const data = await res.json()

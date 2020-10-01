@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 import boto3
 from uuid import uuid4
+from  sqlalchemy.sql.expression import func
 
 from ..models import db, Recipe, RecipeCategory, Note
 
@@ -87,3 +88,8 @@ def recipe_notes(id):
     db.session.add(note)
     db.session.commit()
     return {'note': note.to_dict()}, 200
+
+@recipe_routes.route('/featured')
+def featured_recipes():
+    recipes = Recipe.query.order_by(func.random()).limit(20).all()
+    return {'recipes': [recipe.to_preview_dict() for recipe in recipes]}

@@ -23,6 +23,8 @@ def get_user(id):
     if user and request.method == 'GET':
         return {'user': user.to_dict()}
     elif user and request.method == 'POST':
+        if user.id == 1:
+            return {'message': 'Cannot alter demo user data'}, 200
         form = request.form
         if form.get('firstName'):
             user.first_name = form.get('firstName')

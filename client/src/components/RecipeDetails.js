@@ -101,11 +101,11 @@ export default function RecipeDetails(props) {
                     forks.length > 0 ?
                         <Box flex={false} >
                             <Heading level={3}>Forks:</Heading>
-                            <Carousel >
+                            <Box direction='row' overflow={{horizontal: 'scroll'}} >
                                 {
                                     forks.map(fork => <RecipeCard recipe={{ ...fork }} />)
                                 }
-                            </Carousel>
+                            </Box>
 
                         </Box>
                         : null
