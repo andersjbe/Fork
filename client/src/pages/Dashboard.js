@@ -37,10 +37,10 @@ export default function Dashboard(props) {
         <>
             <Heading level={1}>Welcome to Fork</Heading>
 
-            <Heading level={3}>Featured Recipes</Heading>
+            <Heading level={2}>Featured</Heading>
             <Box width="medium">
                 <Carousel fill controls={false} play={2000}>
-                    {featured.map(recipe => <RecipeCard recipe={recipe} />)}
+                    {featured.map(recipe => <RecipeCard key={recipe.id} recipe={recipe} />)}
                 </Carousel>
             </Box>
 
@@ -53,7 +53,7 @@ export default function Dashboard(props) {
                     featured
                 }
             }}>
-                <Button secondary label='Explore our Featured Recipes' />
+                <Button margin='small' secondary label='Explore our Featured Recipes' />
 
             </Link>
 

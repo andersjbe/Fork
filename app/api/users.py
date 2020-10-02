@@ -60,14 +60,14 @@ def get_user_recipes(id):
 @user_routes.route('/login', methods=['POST'])
 def login():
     # email = request.data['email']
-    email = request.json.get('email')
+    email = request.form.get('email')
 
     try:
         user = User.query.filter(User.email == email).one()
     except:
         return {'message': 'User not found'}, 404
 
-    password = request.json.get('password')
+    password = request.form.get('password')
     matched = user.check_password(password)
 
     if not matched:

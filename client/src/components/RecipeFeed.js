@@ -49,7 +49,6 @@ const RecipeFeed = props => {
 
     const loadMore = () => {
         const fetchMore = async () => {
-            console.log(hasMore)
             if (!hasMore) {
                 return
             }
@@ -57,10 +56,10 @@ const RecipeFeed = props => {
             let res = null;
             try {
                 if ('search' in props && typeof props['search'] === 'string') {
-                    res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}&offset=${currentIndex}`)
+                    res = await fetch(`${apiUrl}/recipes/search?term=${props['search']}&offset=${currentIndex+1}`)
                 } else if ('category' in props && typeof props['category'] === 'string') {
 
-                    res = await fetch(`${apiUrl}/recipes/category/${props['category']}?offset=${currentIndex}`)
+                    res = await fetch(`${apiUrl}/recipes/category/${props['category']}?offset=${currentIndex+1}`)
                 } else if ('user' in props && typeof props['user'] === 'string') {
                     res = await fetch(`${apiUrl}/users/${props['user']}/recipes?offset=${currentIndex}`)
                 } 
@@ -72,7 +71,6 @@ const RecipeFeed = props => {
                     if (data.recipes.length < 20) {
                         setHasMore(false)
                     }
-                    // forceUpdate()
                 } else if (!res.ok) {
                     throw res
                 }

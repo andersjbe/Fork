@@ -75,7 +75,7 @@ export const logOut = () => {
 }
 
 
-const setUser = (token, user) => ({
+export const setUser = (token, user) => ({
     type: SET_USER,
     token,
     user

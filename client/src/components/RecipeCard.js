@@ -44,7 +44,7 @@ export default (props = defaultProps) => {
                     background={`url(${image_src})`}
                 />
 
-                <Box gridArea='text' alignContent='center' wrap>
+                <Box gridArea='text' alignContent='start' wrap>
                     <Text weight='bold' margin='xxsmall'>{title}</Text>
                     <Text margin='xxsmall'>{`by ${name}`}</Text>
                 </Box>

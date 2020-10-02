@@ -8,6 +8,7 @@ from flask_jwt_extended import JWTManager
 from app.models import db, User, RecipeCategory
 from app.api.users import user_routes
 from app.api.recipes import recipe_routes
+from app.api.notes import note_routes
 from app.config import Config
 
 app = Flask(__name__, static_url_path='')
@@ -15,6 +16,7 @@ app = Flask(__name__, static_url_path='')
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(recipe_routes, url_prefix='/api/recipes')
+app.register_blueprint(note_routes, url_prefix='/api/notes')
 db.init_app(app)
 Migrate(app, db)
 jwt = JWTManager(app)
